@@ -1,14 +1,7 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
 
-/* Sticky footer styles
--------------------------------------------------- */
 html {
   font-size: 14px;
 }
@@ -42,8 +35,9 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    padding: 10px;
 }
 .footer {
   position: absolute;
@@ -54,3 +48,88 @@ body {
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
 }
+
+header {
+    background: lightgrey;
+}
+
+    header .jumbotron {
+        font-family: Gabriola;
+        text-align: center;
+        font-size: 48pt;
+    }
+
+footer {
+    padding-top: 20px;
+}
+
+ul.names {
+    column-width: 15em;
+}
+
+div.persons {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    div.persons div {
+        flex-basis: auto;
+        border: 1px solid black;
+        border-radius: 1px;
+        margin: 2px;
+        padding: 0 5px;
+    }
+
+        div.persons div p:first-of-type {
+            font-weight: bold;
+        }
+
+table.pedigree td {
+    text-align: center;
+}
+
+table.pedigree tr:nth-of-type(3) td {
+    width: 50%;
+}
+
+table.pedigree div.primary {
+    background-color: rgb(228, 228, 228);
+}
+
+table.pedigree div.sibling {
+    color: darkgrey;
+    font-size: smaller;
+    padding: 0 4px;
+    float: left;
+}
+
+table.pedigree div.parent {
+    width: 40%;
+    float: left;
+}
+
+table.pedigree div.marriage {
+    width: 20%;
+    float: left;
+}
+
+span.name {
+    font-family: Gabriola;
+    font-size: 45pt;
+}
+
+span.lastname {
+    font-weight: bolder;
+}
+
+label.error {
+    color: red;
+}
+
+ul.menu li {
+    list-style-type: none;
+}
+
+    ul.menu li:before {
+        content: "👉 ";
+    }
