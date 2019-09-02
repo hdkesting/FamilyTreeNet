@@ -11,7 +11,6 @@ namespace FamilyTreeNet.Pages
     {
         public void OnGet()
         {
-
         }
     }
 }
