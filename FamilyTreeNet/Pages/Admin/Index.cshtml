@@ -1,0 +1,14 @@
+﻿@page
+@model FamilyTreeNet.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Welcome";
+    Layout = "_AdminLayout";
+}
+
+<h1>Welcome to Family Tree Admin</h1>
+
+<ul class="menu">
+    <li><a href="/admin/search">Search for people to edit</a></li>
+    <li><a href="/admin/person/restore">Restore soft-deleted people</a></li>
+    <li><a href="/admin/init">Initialize the database</a></li>
+</ul>

@@ -1,0 +1,14 @@
+﻿@page
+@model FamilyTreeNet.Pages.Admin.Init.ClearModel
+@{
+    ViewData["Title"] = "Clear";
+    Layout = "_AdminLayout";
+}
+
+<h1>Clear the database</h1>
+
+<p>Are you sure you want to erase all data?</p>
+<form method="post">
+    <button type="submit" name="sure" value="yes" class="btn btn-danger">Erase all</button>
+    <button type="submit" name="sure" value="no" class="btn btn-info">Cancel</button>
+</form>

@@ -1,0 +1,24 @@
+﻿@page
+@model FamilyTreeNet.Pages.Admin.Init.IndexModel
+@{
+    ViewData["Title"] = "Initialization";
+    Layout = "_AdminLayout";
+}
+
+<h1>Family Tree Initialization</h1>
+<p>There are now @Model.Individuals persons and @Model.Families families in the database.</p>
+
+
+<ul class="menu">
+    <li><a asp-page="clear">Remove all data</a></li>
+    <li><a asp-page="load">(Re)load add data from the configured file</a></li>
+    <li><a href="/admin">Back to main menu</a></li>
+</ul>
+<p>
+    Note that the reload function cannot merge two GEDCOM files. It will only overwrite (and restore) existing data as identified by its ID.
+</p>
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <p class="bg-info text-white">@Model.Message</p>
+}
+

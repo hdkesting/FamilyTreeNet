@@ -1,0 +1,14 @@
+﻿@page
+@model FamilyTreeNet.Pages.Admin.Init.LoadModel
+@{
+    ViewData["Title"] = "Load";
+    Layout = "_AdminLayout";
+}
+
+<h1>(Re)load the database</h1>
+<p>Are you sure you want to overwrite all data (keeping only additions)?</p>
+<form method="post">
+    <button type="submit" name="sure" value="yes" class="btn btn-danger">Overwrite all</button>
+    <button type="submit" name="sure" value="no" class="btn btn-info">Cancel</button>
+</form>
+

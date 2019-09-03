@@ -33,7 +33,11 @@ namespace FamilyTreeNet
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                ////.AddSessionStateTempDataProvider()
+                ;
+            //// services.AddSession();
 
             FamilyTree.Infra.StartupInfra.ConfigureServices(services);
             services.AddTransient<TreeService>();
@@ -56,6 +60,7 @@ namespace FamilyTreeNet
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            //// app.UseSession();
 
             app.UseMvc();
         }

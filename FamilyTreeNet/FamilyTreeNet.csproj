@@ -5,6 +5,14 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\sampleFamily.ged" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\sampleFamily.ged" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
