@@ -22,8 +22,8 @@ namespace FamilyTree.Infra.Models
 
         public bool IsDeleted { get; set; }
 
-        public List<SpouseRelation> Spouses { get; set; } 
-        public List<ChildRelation> Children { get; set; }
+        public List<SpouseRelation> Spouses { get; set; } = new List<SpouseRelation>();
+        public List<ChildRelation> Children { get; set; } = new List<ChildRelation>();
 
     }
 }

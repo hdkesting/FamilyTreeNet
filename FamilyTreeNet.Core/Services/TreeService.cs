@@ -27,11 +27,13 @@ namespace FamilyTreeNet.Core.Services
 
         public async Task<Summary> GetCountSummary()
         {
-            var result = new Summary();
-            result.FamilyCount = await this.familyRepository.Count(true);
-            result.IndividualCount = await this.individualRepository.Count(true);
-            result.ChildCount = await this.individualRepository.GetTotalChildrenCount();
-            result.SpouseCount = await this.individualRepository.GetTotalSpouseCount();
+            var result = new Summary
+            {
+                FamilyCount = await this.familyRepository.Count(true),
+                IndividualCount = await this.individualRepository.Count(true),
+                ChildCount = await this.individualRepository.GetTotalChildrenCount(),
+                SpouseCount = await this.individualRepository.GetTotalSpouseCount()
+            };
 
             return result;
         }
@@ -44,17 +46,48 @@ namespace FamilyTreeNet.Core.Services
 
         internal Task Update(IndividualDto individual)
         {
-            return Task.CompletedTask;
+            if (individual is null)
+            {
+                throw new ArgumentNullException(nameof(individual));
+            }
+
+            if (individual.Id <= 0)
+            {
+                throw new ArgumentException("ID must be greater than zero.");
+            }
+
+            return UpdateImpl(individual);
+        }
+
+        private async Task UpdateImpl(IndividualDto individual)
+        {
+            await this.individualRepository.AddOrUpdate(individual);
+
         }
 
         internal Task Update(FamilyDto family)
         {
-            return Task.CompletedTask;
+            if (family is null)
+            {
+                throw new ArgumentNullException(nameof(family));
+            }
+
+            if (family.Id <= 0)
+            {
+                throw new ArgumentException("ID must be greater than zero.");
+            }
+
+            return UpdateImpl(family);
+        }
+
+        private async Task UpdateImpl(FamilyDto family)
+        {
+            await this.familyRepository.AddOrUpdate(family);
         }
 
         internal Task UpdateRelations(long id, List<long> spouses, List<long> children)
         {
-            return Task.CompletedTask;
+            return this.familyRepository.UpdateRelations(id, spouses, children);
         }
     }
 }

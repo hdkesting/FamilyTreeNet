@@ -34,7 +34,7 @@ namespace FamilyTree.Infra.Models
         /// <value>
         /// The spouse families.
         /// </value>
-        public List<SpouseRelation> SpouseFamilies { get; set; } 
+        public List<SpouseRelation> SpouseFamilies { get; set; } = new List<SpouseRelation>();
 
         /// <summary>
         /// Gets the families where this individual is a child.
@@ -42,7 +42,7 @@ namespace FamilyTree.Infra.Models
         /// <value>
         /// The child families.
         /// </value>
-        public List<ChildRelation> ChildFamilies { get; set; }
+        public List<ChildRelation> ChildFamilies { get; set; } = new List<ChildRelation>();
 
     }
 }
