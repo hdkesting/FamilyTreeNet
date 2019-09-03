@@ -29,7 +29,11 @@ namespace FamilyTreeNet.Pages.Admin.Init
         {
             if (String.Equals(sure, "yes", StringComparison.OrdinalIgnoreCase))
             {
-                await this.treeService.DeleteAll();
+                using (var gedcom = this.GetType().Assembly.GetManifestResourceStream(typeof(Startup), "Resources.sampleFamily.ged"))
+                {
+                    await this.treeService.Load(gedcom);
+                }
+
                 this.Message = "The database has been rewritten.";
             }
 

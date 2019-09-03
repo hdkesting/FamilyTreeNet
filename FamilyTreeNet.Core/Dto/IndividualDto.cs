@@ -1,7 +1,6 @@
 ﻿using FamilyTreeNet.Core.Support;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FamilyTreeNet.Core.Dto
 {
@@ -36,5 +35,7 @@ namespace FamilyTreeNet.Core.Dto
         /// The child families.
         /// </value>
         public IList<FamilyDto> ChildFamilies { get; } = new List<FamilyDto>();
+
+        public override string ToString() => $"INDI {Id}, {Firstnames} {Lastname}";
     }
 }

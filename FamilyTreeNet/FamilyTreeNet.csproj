@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\sampleFamily.ged" />
+    <EmbeddedResource Include="Resources\sampleFamily.ged" />
   </ItemGroup>
 
 

@@ -16,5 +16,7 @@ namespace FamilyTreeNet.Core.Dto
 
         public IList<IndividualDto> Spouses { get; } = new List<IndividualDto>();
         public IList<IndividualDto> Children { get; } = new List<IndividualDto>();
+
+        public override string ToString() => $"Family {Id}";
     }
 }
