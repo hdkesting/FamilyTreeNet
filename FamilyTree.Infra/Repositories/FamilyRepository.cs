@@ -18,19 +18,14 @@ namespace FamilyTree.Infra.Repositories
             this.context = context;
         }
 
-        public Task<int> Count() =>
-            this.context.Families.CountAsync(f => !f.IsDeleted);
+        public Task<int> Count(bool includeDeleted) =>
+            this.context.Families.CountAsync(f => includeDeleted || !f.IsDeleted);
 
-        public Task<int> DeleteAll() => throw new NotImplementedException();
+        public async Task DeleteAll()
+        {
+            this.context.Families.RemoveRange(this.context.Families);
+            await this.context.SaveChangesAsync();
+        }
 
-        public Task<int> GetTotalChildrenCount() =>
-            this.context.Individuals
-            .Where(i => !i.IsDeleted)
-            .CountAsync(i => i.ChildFamilies.Count != 0);
-
-        public Task<int> GetTotalSpouseCount() =>
-            this.context.Individuals
-            .Where(i => !i.IsDeleted)
-            .CountAsync(i => i.SpouseFamilies.Count != 0);
     }
 }

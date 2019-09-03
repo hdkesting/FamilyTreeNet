@@ -6,3 +6,38 @@
 
 <h1>Summary</h1>
 
+<div>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Object</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Persons</td>
+                <td>@Model.Individuals</td>
+            </tr>
+            <tr>
+                <td>Families</td>
+                <td>@Model.Families</td>
+            </tr>
+            <tr>
+                <td>Spouse relations</td>
+                <td>@Model.Spouses</td>
+            </tr>
+            <tr>
+                <td>Child relations</td>
+                <td>@Model.Children</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <p>
+        The "Persons" are the various individuals that are registered in the system. Relations between individuals are registered in "Families".
+        A person can be registered as "child" or as "spouse" in a particular family. Of course he or she will be child in one real family
+        (although that family may not be registered here) and may be spouse in another family (or more).
+    </p>
+</div>

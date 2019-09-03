@@ -1,4 +1,6 @@
 ﻿using FamilyTree.Infra.Models;
+using FamilyTree.Infra.Repositories;
+using FamilyTreeNet.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,6 +17,9 @@ namespace FamilyTree.Infra
         {
             // TODO get from configuration
             services.AddDbContext<FamilyTreeContext>(op => op.UseSqlServer(ConnectionString));
+
+            services.AddTransient<IFamilyRepository, FamilyRepository>();
+            services.AddTransient<IIndividualRepository, IndividualRepository>();
         }
     }
 }
