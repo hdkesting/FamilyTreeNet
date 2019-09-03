@@ -1,0 +1,18 @@
+﻿@page
+@model FamilyTreeNet.Pages.Reports.FamilyNamesModel
+@{
+    ViewData["Title"] = "Family Names";
+}
+
+<h1>All known last names</h1>
+
+<p>
+    <ul class="names">
+        @foreach (var name in Model.Names)
+        {
+            <li>
+                <a asp-page="Family" asp-route-name="@name.Lastname">@name.Lastname</a> (@name.Count)
+            </li>
+        }
+    </ul>
+</p>

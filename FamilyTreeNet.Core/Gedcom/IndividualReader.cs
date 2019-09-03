@@ -5,7 +5,7 @@ using FamilyTreeNet.Core.Services;
 
 namespace FamilyTreeNet.Core.Gedcom
 {
-    internal class IndividualReader : GedcomReader
+    internal class IndividualReader : IGedcomReader
     {
         private readonly IndividualDto individual = new IndividualDto();
 

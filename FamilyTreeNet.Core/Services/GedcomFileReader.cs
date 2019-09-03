@@ -25,7 +25,7 @@ namespace FamilyTreeNet.Core.Services
         public async Task ReadFile(StreamReader reader)
         {
             string line;
-            GedcomReader objectReader = new Discarder();
+            IGedcomReader objectReader = new Discarder();
 
             while ((line = reader.ReadLine()) != null)
             {

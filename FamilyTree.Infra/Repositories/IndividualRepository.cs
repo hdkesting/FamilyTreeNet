@@ -51,6 +51,30 @@ namespace FamilyTree.Infra.Repositories
 #pragma warning restore EF1000 // Possible SQL injection vulnerability.
         }
 
+        public async Task<IndividualDto> GetById(long id, bool includeDeleted)
+        {
+            return Map(await this.context.Individuals
+                .FirstOrDefaultAsync(i => i.Id == id && (includeDeleted || !i.IsDeleted)));
+        }
+
+        public async Task<List<IndividualDto>> GetIndividualsByLastname(string name)
+        {
+            var dblist= await this.context.Individuals
+                .Where(i => !i.IsDeleted)
+                .Where(i => i.Lastname == name)
+                .ToListAsync();
+
+            return dblist.Select(Map).ToList();
+        }
+
+        public Task<List<NameCount>> GetLastNames()
+        {
+            return this.context.Individuals
+                .GroupBy(i => i.Lastname)
+                .Select(g => new NameCount(g.Key, g.Count()))
+                .ToListAsync();
+        }
+
         public Task<int> GetTotalChildrenCount() =>
             this.context.Individuals
             .Where(i => !i.IsDeleted)
@@ -60,5 +84,19 @@ namespace FamilyTree.Infra.Repositories
             this.context.Individuals
             .Where(i => !i.IsDeleted)
             .CountAsync(i => i.SpouseFamilies.Count != 0);
+
+        private IndividualDto Map(Individual indi)
+        {
+            return new IndividualDto
+            {
+                Id = indi.Id,
+                Firstnames = indi.Firstnames,
+                Lastname = indi.Lastname,
+                BirthDate = indi.BirthDate,
+                BirthPlace = indi.BirthPlace,
+                DeathDate = indi.DeathDate,
+                DeathPlace = indi.DeathPlace
+            };
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace FamilyTreeNet.Core.Gedcom
 {
-    internal interface GedcomReader
+    internal interface IGedcomReader
     {
         /// <summary>
         /// Processes the next line (level &gt; 0).

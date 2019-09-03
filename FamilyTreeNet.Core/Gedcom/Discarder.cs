@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace FamilyTreeNet.Core.Gedcom
 {
-    internal class Discarder : GedcomReader
+    internal class Discarder : IGedcomReader
     {
         public void ProcessNextLine(PropertyLine line)
         {

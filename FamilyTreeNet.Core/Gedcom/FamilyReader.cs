@@ -7,7 +7,7 @@ using FamilyTreeNet.Core.Services;
 
 namespace FamilyTreeNet.Core.Gedcom
 {
-    internal class FamilyReader : GedcomReader
+    internal class FamilyReader : IGedcomReader
     {
         private readonly FamilyDto family = new FamilyDto();
         private readonly List<long> spouses = new List<long>();

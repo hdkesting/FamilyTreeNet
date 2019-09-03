@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FamilyTreeNet.Core.Dto;
 
 namespace FamilyTreeNet.Core.Interfaces
@@ -17,6 +18,7 @@ namespace FamilyTreeNet.Core.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<int> GetTotalSpouseCount();
+        Task<List<NameCount>> GetLastNames();
 
         /// <summary>
         /// Gets the total children count.
@@ -24,11 +26,14 @@ namespace FamilyTreeNet.Core.Interfaces
         /// <returns></returns>
         Task<int> GetTotalChildrenCount();
 
+        Task<IndividualDto> GetById(long id, bool includeDeleted);
+
         /// <summary>
         /// Deletes all individuals.
         /// </summary>
         /// <returns></returns>
         Task DeleteAll();
+        Task<List<IndividualDto>> GetIndividualsByLastname(string name);
 
         /// <summary>
         /// Adds or updates the individual.

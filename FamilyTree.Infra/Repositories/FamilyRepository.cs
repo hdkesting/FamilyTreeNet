@@ -13,10 +13,12 @@ namespace FamilyTree.Infra.Repositories
     public class FamilyRepository : IFamilyRepository
     {
         private readonly FamilyTreeContext context;
+        private readonly IIndividualRepository individualRepository;
 
-        public FamilyRepository(FamilyTreeContext context)
+        public FamilyRepository(FamilyTreeContext context, IIndividualRepository individualRepository)
         {
             this.context = context;
+            this.individualRepository = individualRepository;
         }
 
         public async Task AddOrUpdate(FamilyDto family)
@@ -53,6 +55,42 @@ namespace FamilyTree.Infra.Repositories
 #pragma warning restore EF1000 // Possible SQL injection vulnerability.
         }
 
+        public async Task<List<FamilyDto>> GetChildFamiliesByIndividualId(long id, bool includeDeleted)
+        {
+            var list = await this.context.Families
+                .Include(f => f.Spouses)
+                .Include(f => f.Children)
+                .Where(f => includeDeleted || !f.IsDeleted)
+                .Where(f => f.Children.Any(s => s.ChildId == id))
+                .ToListAsync();
+
+            var res = new List<FamilyDto>();
+            foreach (var fam in list)
+            {
+                res.Add(await Map(fam, includeDeleted));
+            }
+
+            return res;
+        }
+
+        public async Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted)
+        {
+            var list = await this.context.Families
+                .Include(f => f.Spouses)
+                .Include(f => f.Children)
+                .Where(f => includeDeleted || !f.IsDeleted)
+                .Where(f => f.Spouses.Any(s => s.SpouseId == id))
+                .ToListAsync();
+
+            var res = new List<FamilyDto>();
+            foreach (var fam in list)
+            {
+                res.Add(await Map(fam, includeDeleted));
+            }
+
+            return res;
+        }
+
         public async Task UpdateRelations(long familyId, List<long> spouses, List<long> children)
         {
             var fam = await this.context.Families
@@ -78,6 +116,30 @@ namespace FamilyTree.Infra.Repositories
             }
 
             // else just ignore
+        }
+
+        private async Task<FamilyDto> Map(Family db, bool includeDeleted)
+        {
+            var res = new FamilyDto
+            {
+                Id = db.Id,
+                MarriageDate = db.MarriageDate,
+                MarriagePlace = db.MarriagePlace,
+                DivorceDate = db.DivorceDate,
+                DivorcePlace = db.DivorcePlace,
+            };
+
+            foreach (var spouse in db.Spouses)
+            {
+                res.Spouses.Add(await this.individualRepository.GetById(spouse.SpouseId, includeDeleted));
+            }
+
+            foreach(var child in db.Children)
+            {
+                res.Children.Add(await this.individualRepository.GetById(child.ChildId, includeDeleted));
+            }
+
+            return res;
         }
     }
 }

@@ -34,5 +34,9 @@ namespace FamilyTreeNet.Core.Interfaces
         /// <param name="children">The children.</param>
         /// <returns></returns>
         Task UpdateRelations(long familyId, List<long> spouses, List<long> children);
+
+        Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted);
+
+        Task<List<FamilyDto>> GetChildFamiliesByIndividualId(long id, bool includeDeleted);
     }
 }

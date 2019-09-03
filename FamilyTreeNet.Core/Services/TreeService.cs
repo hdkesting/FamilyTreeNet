@@ -19,11 +19,26 @@ namespace FamilyTreeNet.Core.Services
             this.familyRepository = familyRepository;
         }
 
+        public Task<List<NameCount>> GetLastNames() 
+            => this.individualRepository.GetLastNames();
+
+        public Task<IndividualDto> GetIndividualById(long id) 
+            => this.individualRepository.GetById(id, false);
+
         public async Task DeleteAll()
         {
             await this.familyRepository.DeleteAll().ConfigureAwait(false);
             await this.individualRepository.DeleteAll();
         }
+
+        public Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted) 
+            => this.familyRepository.GetSpouseFamiliesByIndividualId(id, includeDeleted);
+
+        public Task<List<FamilyDto>> GetChildFamiliesByIndividualId(long id, bool includeDeleted)
+            => this.familyRepository.GetChildFamiliesByIndividualId(id, includeDeleted);
+
+        public Task<List<IndividualDto>> GetIndividualsByLastname(string name) 
+            => this.individualRepository.GetIndividualsByLastname(name);
 
         public async Task<Summary> GetCountSummary()
         {

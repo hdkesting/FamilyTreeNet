@@ -1,0 +1,46 @@
+﻿@page "{id}"
+@model FamilyTreeNet.Pages.Reports.PersonModel
+@{
+    ViewData["Title"] = "Person";
+}
+
+<h1>Information about <span class="name">@Model.Primary.FullName</span></h1>
+
+<p>
+    Back to <a asp-page="Names" asp-route-name="@Model.Primary.Lastname">@Model.Primary.Lastname</a>.
+</p>
+
+<h2>Descent</h2>
+<table class="table table-bordered pedigree">
+    <tr>
+        <td colspan="2">
+            <!-- primary + siblings -->
+            <div>
+                @{Model.Primary.Css = "primary"; }
+                <partial name="_PersonBlock" model="@Model.Primary" />
+                @foreach (var sib in Model.Siblings)
+                {
+                 sib.Css = "sibling";
+                <partial name="_PersonBlock" model="@sib" />
+                }
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>
+            </div>
+        </td>
+        <td>
+            <div>
+            </div>
+        </td>
+    </tr>
+</table>
+

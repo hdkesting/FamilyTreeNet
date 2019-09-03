@@ -1,0 +1,39 @@
+﻿@page "{name}"
+@model FamilyTreeNet.Pages.Reports.FamilyModel
+@{
+    ViewData["Title"] = "Family";
+}
+
+<h1>Family <q><span class="name">@Model.Lastname</span></q></h1>
+
+<p><a asp-page="FamilyNames">Back to overview</a></p>
+<div>
+    <div class="persons">
+        @foreach (var person in Model.Individuals)
+        {
+            <div>
+                <p>
+                    <a asp-page="Person" asp-route-id="@person.Id">@person.Firstnames</a>
+                    @if (person.IsMale)
+                    {
+                        <strong>&male;👨</strong>
+                    }
+                    @if (person.IsFemale)
+                    {
+                        <strong>&female;👩</strong>
+                    }
+                </p>
+                @if (person.BirthDate != null)
+                {
+                    <p>✤ <span>@person.BirthDateFmt</span> <span>@person.BirthPlace</span></p>
+                }
+                @if (person.DeathDate != null)
+                {
+                    <p>&dagger; <span>@person.DeathDateFmt</span> <span>@person.DeathPlace</span></p>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<p><a asp-page="FamilyNames">Back to overview</a></p>
