@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FamilyTreeNet.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,6 +17,7 @@ namespace FamilyTreeNet.Pages.Admin.Init
         }
 
         public int Individuals { get; private set; }
+
         public int Families { get; private set; }
 
         [TempData]

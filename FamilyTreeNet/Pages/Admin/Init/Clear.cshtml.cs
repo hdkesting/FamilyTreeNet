@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FamilyTreeNet.Core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +17,6 @@ namespace FamilyTreeNet.Pages.Admin.Init
 
         [TempData]
         public string Message { get; set; }
-
-        public void OnGet()
-        {
-            // no action required
-        }
 
         public async Task<IActionResult> OnPost(string sure)
         {

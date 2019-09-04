@@ -39,6 +39,11 @@ namespace FamilyTreeNet
                 ;
             //// services.AddSession();
 
+            // https://stackoverflow.com/a/54813987/121309
+            services.Configure<CookieTempDataProviderOptions>(options => {
+                options.Cookie.IsEssential = true;
+            });
+
             FamilyTree.Infra.StartupInfra.ConfigureServices(services);
             services.AddTransient<TreeService>();
         }
