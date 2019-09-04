@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace FamilyTree.Infra.Models
 {
+    // only used for migrations
     internal class FamilyTreeContextFactory : IDesignTimeDbContextFactory<FamilyTreeContext>
     {
         public FamilyTreeContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<FamilyTreeContext>();
-            optionsBuilder.UseSqlServer(StartupInfra.ConnectionString);
+            optionsBuilder.UseSqlServer(@"Server=.\sqlexpress;Database=familytree;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;Application Name=FamilyTreeNet");
 
             return new FamilyTreeContext(optionsBuilder.Options);
         }

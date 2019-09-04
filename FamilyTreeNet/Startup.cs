@@ -34,17 +34,14 @@ namespace FamilyTreeNet
 
 
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                ////.AddSessionStateTempDataProvider()
-                ;
-            //// services.AddSession();
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // https://stackoverflow.com/a/54813987/121309
             services.Configure<CookieTempDataProviderOptions>(options => {
                 options.Cookie.IsEssential = true;
             });
 
-            FamilyTree.Infra.StartupInfra.ConfigureServices(services);
+            FamilyTree.Infra.StartupInfra.ConfigureServices(services, this.Configuration);
             services.AddTransient<TreeService>();
         }
 
