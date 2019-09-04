@@ -1,0 +1,16 @@
+﻿@model FamilyTreeNet.ViewModels.FamilyVm
+
+@if (Model != null)
+{
+<div class="marriage">
+    <p style="font-size: x-large">&times;</p>
+    @if (Model.MarriageDate != null)
+    {
+    <p><span title="Married">⚭</span> <span>@Model.MarriageDateFmt</span> <span>@Model.MarriagePlace</span></p>
+    }
+    @if (Model.DivorceDate != null)
+    {
+    <p><span title="Divorced">⚮</span> <span>@Model.DivorceDateFmt</span> <span>@Model.DivorcePlace</span></p>
+    }
+</div>
+}

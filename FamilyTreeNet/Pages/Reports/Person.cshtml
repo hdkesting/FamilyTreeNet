@@ -1,5 +1,6 @@
 ﻿@page "{id}"
 @model FamilyTreeNet.Pages.Reports.PersonModel
+@using FamilyTreeNet.ViewModels
 @{
     ViewData["Title"] = "Person";
 }
@@ -7,7 +8,7 @@
 <h1>Information about <span class="name">@Model.Primary.FullName</span></h1>
 
 <p>
-    Back to <a asp-page="Names" asp-route-name="@Model.Primary.Lastname">@Model.Primary.Lastname</a>.
+    Back to <a asp-page="Family" asp-route-name="@Model.Primary.Lastname">@Model.Primary.Lastname</a>.
 </p>
 
 <h2>Descent</h2>
@@ -16,12 +17,10 @@
         <td colspan="2">
             <!-- primary + siblings -->
             <div>
-                @{Model.Primary.Css = "primary"; }
-                <partial name="_PersonBlock" model="@Model.Primary" />
+                <partial name="_PersonBlock" model="@WithCss(Model.Primary, "primary")" />
                 @foreach (var sib in Model.Siblings)
                 {
-                 sib.Css = "sibling";
-                <partial name="_PersonBlock" model="@sib" />
+                    <partial name="_PersonBlock" model="@WithCss(sib, "sibling")" />
                 }
             </div>
         </td>
@@ -29,18 +28,70 @@
     <tr>
         <td colspan="2">
             <div>
+                <partial name="_PersonBlock" model="@WithCss(Model.ParentFamily.Husband, "parent")" />
+                <partial name="_FamilyBlock" model="@Model.ParentFamily" />
+                <partial name="_PersonBlock" model="@WithCss(Model.ParentFamily.Wife, "parent")" />
             </div>
         </td>
     </tr>
     <tr>
         <td>
             <div>
+                <partial name="_PersonBlock" model="@WithCss(Model.PaternalGrandparents.Husband, "parent")" />
+                <partial name="_FamilyBlock" model="@Model.PaternalGrandparents" />
+                <partial name="_PersonBlock" model="@WithCss(Model.PaternalGrandparents.Wife, "parent")" />
             </div>
         </td>
         <td>
             <div>
+                <partial name="_PersonBlock" model="@WithCss(Model.MaternalGrandparents.Husband, "parent")" />
+                <partial name="_FamilyBlock" model="@Model.MaternalGrandparents" />
+                <partial name="_PersonBlock" model="@WithCss(Model.MaternalGrandparents.Wife, "parent")" />
             </div>
         </td>
     </tr>
 </table>
 
+@if (Model.Marriages.Any())
+{
+    <h2>@(Model.Marriages.Count == 1 ? "Marriage" : "Marriages")</h2>
+    @foreach (var marr in Model.Marriages)
+    {
+        @if (marr.Wife != null && marr.Wife.Id != Model.Primary.Id)
+        {
+            <p>
+                <strong>Married to</strong> <partial name="_PersonLine" model="@marr.Wife" />
+            </p>
+        }
+        @if (marr.Husband != null && marr.Husband.Id != Model.Primary.Id)
+        {
+            <p>
+                <strong>Married to</strong> <partial name="_PersonLine" model="@marr.Husband" />
+            </p>
+        }
+
+        @if (marr.Children.Any())
+        {
+            <strong>Children</strong>
+            <ul>
+                @foreach(var child in marr.Children)
+                {
+                    <li><partial name="_PersonLine" model="@child" /></li>
+                }
+            </ul>
+        }
+
+    }
+}
+
+@functions {
+    IndividualVm WithCss(IndividualVm person, string css)
+    {
+        if (person == null)
+        {
+            return null;
+        }
+        person.Css = css;
+        return person;
+    }
+}

@@ -37,7 +37,7 @@ namespace FamilyTreeNet.ViewModels
         public string MarriagePlace { get; set; }
 
         public DateTime? DivorceDate { get; set; }
-        public string DivorceDateFrm => Utils.FormatDate(DivorceDate);
+        public string DivorceDateFmt => Utils.FormatDate(DivorceDate);
 
         public string DivorcePlace { get; set; }
 

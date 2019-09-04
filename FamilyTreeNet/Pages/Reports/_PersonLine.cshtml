@@ -1,0 +1,34 @@
+﻿@model FamilyTreeNet.ViewModels.IndividualVm
+
+@if (Model != null)
+{
+    <span>
+        <a asp-page="Person" asp-route-id="@Model.Id">
+            <span>@Model.Firstnames</span>
+            <span class="lastname">@Model.Lastname</span>
+        </a>
+        @if (Model.IsMale)
+        {
+            <strong>&male;👨</strong>
+        }
+        else if (Model.IsFemale)
+        {
+            <strong>&female;👩</strong>
+        }
+        @if (Model.DiedAtBirth)
+        {
+            <text>, ✤&dagger; </text>@($"{Model.BirthDateFmt} {Model.BirthPlace}")
+        }
+        else
+        {
+            if (Model.BirthDataKnown)
+            {
+                <text>, ✤ </text>@($"{Model.BirthDateFmt} {Model.BirthPlace}")
+            }
+            if (Model.DeathDataKnown)
+            {
+                <text>, &dagger; </text>@($"{Model.DeathDateFmt} {Model.DeathPlace}")
+            }
+        }
+    </span>
+}
