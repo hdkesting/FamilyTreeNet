@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using FamilyTreeNet.Core.Dto;
 using FamilyTreeNet.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FamilyTreeNet.Pages.Reports
 {
+    [AllowAnonymous]
     public class FamilyNamesModel : PageModel
     {
         private readonly TreeService treeService;

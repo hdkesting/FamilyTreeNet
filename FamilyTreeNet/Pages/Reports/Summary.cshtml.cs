@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FamilyTreeNet.Core.Services;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FamilyTreeNet.Pages.Reports
 {
+    [AllowAnonymous]
     public class SummaryModel : PageModel
     {
         private readonly TreeService treeService;

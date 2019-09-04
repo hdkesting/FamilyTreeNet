@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FamilyTreeNet.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FamilyTreeNet
 {
@@ -32,8 +37,18 @@ namespace FamilyTreeNet
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<Auth.AuthDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<FamilyTreeNet.Auth.ApplicationUser>().AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<Auth.AuthDbContext>();
 
-            services.AddMvc()
+            // require login everywhere, except where explicitly marked with [AllowAnonymous]
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                         .RequireAuthenticatedUser()
+                         .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // https://stackoverflow.com/a/54813987/121309
@@ -42,6 +57,7 @@ namespace FamilyTreeNet
             });
 
             FamilyTree.Infra.StartupInfra.ConfigureServices(services, this.Configuration);
+
             services.AddTransient<TreeService>();
         }
 
@@ -62,6 +78,7 @@ namespace FamilyTreeNet
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
             //// app.UseSession();
 
             app.UseMvc();
