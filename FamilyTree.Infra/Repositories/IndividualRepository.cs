@@ -32,6 +32,11 @@ namespace FamilyTree.Infra.Repositories
             indi.IsDeleted = false;
             indi.Firstnames = individual.Firstnames;
             indi.Lastname = individual.Lastname;
+            // C#8: switch expression
+            indi.Sex = individual.Sex == FamilyTreeNet.Core.Support.Sex.Male ? 'M'
+                    : individual.Sex == FamilyTreeNet.Core.Support.Sex.Female ? 'F'
+                    : '?';
+
             indi.BirthDate = individual.BirthDate;
             indi.BirthPlace = individual.BirthPlace;
             indi.DeathDate = individual.DeathDate;
@@ -95,7 +100,10 @@ namespace FamilyTree.Infra.Repositories
                 BirthDate = indi.BirthDate,
                 BirthPlace = indi.BirthPlace,
                 DeathDate = indi.DeathDate,
-                DeathPlace = indi.DeathPlace
+                DeathPlace = indi.DeathPlace,
+                Sex = indi.Sex == 'M' ? FamilyTreeNet.Core.Support.Sex.Male
+                    : indi.Sex == 'F' ? FamilyTreeNet.Core.Support.Sex.Female
+                    : FamilyTreeNet.Core.Support.Sex.Unknown,
             };
         }
     }
