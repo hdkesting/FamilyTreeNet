@@ -38,13 +38,70 @@ namespace FamilyTreeNet.ViewModels
 
         public Sex Sex { get; set; }
 
+        public string SexChar
+        {
+            get
+            {
+                return Sex == Sex.Male ? "M"
+                    : Sex == Sex.Female ? "F"
+                    : "?";
+            }
+
+            set
+            {
+                Sex = value == "M" ? Sex.Male
+                    : value == "F" ? Sex.Female
+                    : Sex.Unknown;
+            }
+        }
+
         public GeneaDate BirthDate { get; set; }
         public string BirthDateFmt => this.BirthDate?.ToString();
+
+        public DateTime? BirthDateDate
+        {
+            get
+            {
+                return this.BirthDate?.ToDate();
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    this.BirthDate = null;
+                }
+                else
+                {
+                    this.BirthDate = new GeneaDate(value.Value);
+                }
+            }
+        }
 
         public string BirthPlace { get; set; }
 
         public GeneaDate DeathDate { get; set; }
         public string DeathDateFmt => this.DeathDate?.ToString();
+
+        public DateTime? DeathDateDate
+        {
+            get
+            {
+                return this.DeathDate?.ToDate();
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    this.DeathDate = null;
+                }
+                else
+                {
+                    this.DeathDate = new GeneaDate(value.Value);
+                }
+            }
+        }
 
         public string DeathPlace { get; set; }
 

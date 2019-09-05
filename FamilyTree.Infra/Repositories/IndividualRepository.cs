@@ -98,6 +98,17 @@ namespace FamilyTree.Infra.Repositories
             .Where(i => !i.IsDeleted)
             .CountAsync(i => i.SpouseFamilies.Count != 0);
 
+        public async Task MarkIndividualAsDeleted(long id)
+        {
+            var indi = await this.context.Individuals.SingleOrDefaultAsync(i => i.Id == id).ConfigureAwait(false);
+
+            if (indi != null)
+            {
+                indi.IsDeleted = true;
+                await this.context.SaveChangesAsync().ConfigureAwait(false);
+            }
+        }
+
         public async Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname)
         {
             var qry = this.context.Individuals

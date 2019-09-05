@@ -1,0 +1,13 @@
+﻿@page "{id}"
+@model FamilyTreeNet.Pages.Admin.DeletePersonModel
+@{
+    ViewData["Title"] = "DeletePerson";
+    Layout = "_AdminLayout";
+}
+
+<h1>Do you want to delete <span class="name">@Model.FullName</span>?</h1>
+<form method="post">
+    <input type="hidden" name="confirmid" value="@Model.Id" />
+    <button type="submit" class="btn btn-primary">Yes</button>
+    <button type="button" class="btn btn-secondary" onclick="history.back(-1)">No</button>
+</form>

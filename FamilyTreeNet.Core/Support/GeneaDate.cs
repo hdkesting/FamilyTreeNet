@@ -31,6 +31,14 @@ namespace FamilyTreeNet.Core.Support
             this.Year = ymd;
         }
 
+        public GeneaDate(DateTime date)
+        {
+            this.Year = date.Year;
+            this.Month = date.Month;
+            this.Day = date.Day;
+            this.Accuracy = DateAccuracy.Exact;
+        }
+
         public int Year { get; }
 
         public int Month { get; }
@@ -41,6 +49,21 @@ namespace FamilyTreeNet.Core.Support
 
         public int ToInt32()
             => ((this.Year * 100 + this.Month) * 100 + this.Day) * 10 + (int)this.Accuracy;
+
+        public DateTime ToDate()
+        {
+            if (this.Month <= 0)
+            {
+                return new DateTime(this.Year, 1, 1);
+            }
+
+            if (this.Day <= 0)
+            {
+                return new DateTime(this.Year, this.Month, 1);
+            }
+
+            return new DateTime(this.Year, this.Month, this.Day);
+        }
 
         public override string ToString()
         {

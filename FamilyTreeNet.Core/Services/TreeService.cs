@@ -34,6 +34,9 @@ namespace FamilyTreeNet.Core.Services
             await this.individualRepository.DeleteAll().ConfigureAwait(false);
         }
 
+        public Task DeleteIndividualById(long id)
+            => this.individualRepository.MarkIndividualAsDeleted(id); 
+
         public Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted) 
             => this.familyRepository.GetSpouseFamiliesByIndividualId(id, includeDeleted);
 
@@ -62,7 +65,7 @@ namespace FamilyTreeNet.Core.Services
             await rdr.ReadFile(gedcom).ConfigureAwait(false);
         }
 
-        internal Task Update(IndividualDto individual)
+        public Task Update(IndividualDto individual)
         {
             if (individual is null)
             {
@@ -75,15 +78,15 @@ namespace FamilyTreeNet.Core.Services
             }
 
             return UpdateImpl(individual);
+
+            async Task UpdateImpl(IndividualDto indi)
+            {
+                await this.individualRepository.AddOrUpdate(indi).ConfigureAwait(false);
+
+            }
         }
 
-        private async Task UpdateImpl(IndividualDto individual)
-        {
-            await this.individualRepository.AddOrUpdate(individual).ConfigureAwait(false);
-
-        }
-
-        internal Task Update(FamilyDto family)
+        public Task Update(FamilyDto family)
         {
             if (family is null)
             {
@@ -96,12 +99,13 @@ namespace FamilyTreeNet.Core.Services
             }
 
             return UpdateImpl(family);
+
+            async Task UpdateImpl(FamilyDto fam)
+            {
+                await this.familyRepository.AddOrUpdate(fam).ConfigureAwait(false);
+            }
         }
 
-        private async Task UpdateImpl(FamilyDto family)
-        {
-            await this.familyRepository.AddOrUpdate(family).ConfigureAwait(false);
-        }
 
         internal Task UpdateRelations(long id, List<long> spouses, List<long> children)
         {

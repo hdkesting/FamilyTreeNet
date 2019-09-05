@@ -35,6 +35,7 @@ namespace FamilyTreeNet.Core.Interfaces
         /// <param name="lastname">The lastname.</param>
         /// <returns></returns>
         Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname);
+        Task MarkIndividualAsDeleted(long id);
 
         /// <summary>
         /// Deletes all individuals.
