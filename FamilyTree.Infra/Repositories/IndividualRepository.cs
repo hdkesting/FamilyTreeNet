@@ -98,6 +98,32 @@ namespace FamilyTree.Infra.Repositories
             .Where(i => !i.IsDeleted)
             .CountAsync(i => i.SpouseFamilies.Count != 0);
 
+        public async Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname)
+        {
+            var qry = this.context.Individuals
+                .Where(i => !i.IsDeleted);
+
+            firstname = firstname?.Trim();
+            lastname = lastname?.Trim();
+
+            if (!string.IsNullOrEmpty(firstname))
+            {
+                foreach(var part in firstname.Split(new [] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries))
+                {
+                    qry = qry.Where(i => i.Firstnames.Contains(part));
+                }
+            }
+
+            if (!string.IsNullOrEmpty(lastname))
+            {
+                qry = qry.Where(i => i.Lastname.Contains(lastname));
+            }
+
+            var list = await qry.ToListAsync().ConfigureAwait(false);
+
+            return list.Select(Map);
+        }
+
         private IndividualDto Map(Individual indi)
         {
             return new IndividualDto

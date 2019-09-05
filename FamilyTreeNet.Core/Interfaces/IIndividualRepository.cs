@@ -29,6 +29,14 @@ namespace FamilyTreeNet.Core.Interfaces
         Task<IndividualDto> GetById(long id, bool includeDeleted);
 
         /// <summary>
+        /// Searches for individuals by firstname and/or lastname.
+        /// </summary>
+        /// <param name="firstname">The firstname.</param>
+        /// <param name="lastname">The lastname.</param>
+        /// <returns></returns>
+        Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname);
+
+        /// <summary>
         /// Deletes all individuals.
         /// </summary>
         /// <returns></returns>

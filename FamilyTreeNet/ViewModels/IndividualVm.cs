@@ -52,7 +52,21 @@ namespace FamilyTreeNet.ViewModels
 
         public bool IsFemale => this.Sex == Sex.Female;
 
+        /// <summary>
+        /// Gets or sets the CSS, to be used on the "person block".
+        /// </summary>
+        /// <value>
+        /// The CSS.
+        /// </value>
         public string Css { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the "primary", for use in the Admin section.
+        /// </summary>
+        /// <value>
+        /// The primary identifier.
+        /// </value>
+        public long PrimaryId { get; set; }
 
         public bool DiedAtBirth => BirthDate != null && DeathDate != null && BirthDate.Value == DeathDate.Value;
 

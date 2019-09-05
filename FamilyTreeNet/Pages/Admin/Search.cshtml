@@ -1,0 +1,49 @@
+﻿@page
+@model FamilyTreeNet.Pages.Admin.SearchModel
+@{
+    ViewData["Title"] = "Search";
+    Layout = "_AdminLayout";
+}
+
+<div layout:fragment="content">
+    <h1>Search for names to edit</h1>
+    <form method="post" id="searchform">
+        <div class="form-group">
+            <label for="firstname">First name</label>
+            <input type="text" name="firstname" id="firstname" class="form-control search-group"
+                   placeholder="Enter (partial) first name(s)" value="@Model.Firstname" />
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last name</label>
+            <input type="text" name="lastname" id="lastname" class="form-control search-group"
+                   placeholder="Enter (partial) last name" value="@Model.Lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    @if (Model.List.Any())
+    {
+    <!-- result list -->
+    <div>
+        <ul>
+            @foreach(var indi in Model.List)
+            {
+                <li><partial name="_PersonLineAdmin" model="indi" /></li>
+            }
+        </ul>
+    </div>
+    }
+</div>
+<script layout:fragment="additionalscript">
+        $("#searchform").validate({
+            rules: {
+                firstname: {
+                    require_from_group: [1, ".search-group"]
+                },
+                lastname: {
+                    require_from_group: [1, ".search-group"]
+                }
+            }
+        });
+</script>
+

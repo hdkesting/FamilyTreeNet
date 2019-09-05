@@ -25,6 +25,9 @@ namespace FamilyTreeNet.Core.Services
         public Task<IndividualDto> GetIndividualById(long id) 
             => this.individualRepository.GetById(id, false);
 
+        public Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname)
+            => this.individualRepository.SearchByName(firstname, lastname);
+
         public async Task DeleteAll()
         {
             await this.familyRepository.DeleteAll().ConfigureAwait(false);
