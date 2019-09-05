@@ -104,8 +104,7 @@ namespace FamilyTreeNet.Pages.Reports
                 return -1;
             }
 
-            return a.BirthDate.Value.CompareTo(b.BirthDate.Value);
+            return a.BirthDate.CompareTo(b.BirthDate);
         }
-
     }
 }

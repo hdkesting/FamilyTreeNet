@@ -1,4 +1,4 @@
-﻿using System;
+﻿using FamilyTreeNet.Core.Support;
 using System.Collections.Generic;
 
 namespace FamilyTreeNet.Core.Dto
@@ -7,10 +7,12 @@ namespace FamilyTreeNet.Core.Dto
     {
         public long Id { get; set; }
 
-        public DateTime? MarriageDate { get; set; }
+        public GeneaDate MarriageDate { get; set; }
+
         public string MarriagePlace { get; set; }
 
-        public DateTime? DivorceDate { get; set; }
+        public GeneaDate DivorceDate { get; set; }
+
         public string DivorcePlace { get; set; }
 
         public IList<IndividualDto> Spouses { get; } = new List<IndividualDto>();

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FamilyTreeNet.Core.Dto;
 using FamilyTreeNet.Core.Services;
+using FamilyTreeNet.Core.Support;
 
 namespace FamilyTreeNet.Core.Gedcom
 {
@@ -50,16 +51,16 @@ namespace FamilyTreeNet.Core.Gedcom
                     inDivorce = true;
                     break;
                 case "DATE":
-                    GedcomDate dt = GedcomDate.Parse(line.Value);
+                    GeneaDate dt = GedcomDate.Parse(line.Value);
                     if (dt != null)
                     {
                         if (inMarriage)
                         {
-                            this.family.MarriageDate = dt.Date;
+                            this.family.MarriageDate = dt;
                         }
                         else if (inDivorce)
                         {
-                            this.family.DivorceDate = dt.Date;
+                            this.family.DivorceDate = dt;
                         }
                     }
                     break;

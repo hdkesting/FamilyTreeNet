@@ -43,9 +43,9 @@ namespace FamilyTree.Infra.Repositories
                     : individual.Sex == FamilyTreeNet.Core.Support.Sex.Female ? 'F'
                     : '?';
 
-            indi.BirthDate = individual.BirthDate;
+            indi.BirthDateInt = individual.BirthDate?.ToInt32();
             indi.BirthPlace = individual.BirthPlace;
-            indi.DeathDate = individual.DeathDate;
+            indi.DeathDateInt = individual.DeathDate?.ToInt32();
             indi.DeathPlace = individual.DeathPlace;
 
             await this.context.SaveChangesAsync().ConfigureAwait(false);
@@ -131,9 +131,9 @@ namespace FamilyTree.Infra.Repositories
                 Id = indi.Id,
                 Firstnames = indi.Firstnames,
                 Lastname = indi.Lastname,
-                BirthDate = indi.BirthDate,
+                BirthDate = indi.BirthDateInt == null ? null : new FamilyTreeNet.Core.Support.GeneaDate(indi.BirthDateInt.Value),
                 BirthPlace = indi.BirthPlace,
-                DeathDate = indi.DeathDate,
+                DeathDate = indi.DeathDateInt == null ? null : new FamilyTreeNet.Core.Support.GeneaDate(indi.DeathDateInt.Value),
                 DeathPlace = indi.DeathPlace,
                 Sex = indi.Sex == 'M' ? FamilyTreeNet.Core.Support.Sex.Male
                     : indi.Sex == 'F' ? FamilyTreeNet.Core.Support.Sex.Female

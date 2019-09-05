@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FamilyTreeNet.Core.Dto;
 using FamilyTreeNet.Core.Services;
+using FamilyTreeNet.Core.Support;
 
 namespace FamilyTreeNet.Core.Gedcom
 {
@@ -61,16 +62,16 @@ namespace FamilyTreeNet.Core.Gedcom
                     inDeath = true;
                     break;
                 case "DATE":
-                    GedcomDate dt = GedcomDate.Parse(line.Value);
+                    GeneaDate dt = GedcomDate.Parse(line.Value);
                     if (dt != null)
                     {
                         if (inBirth)
                         {
-                            this.individual.BirthDate = dt.Date;
+                            this.individual.BirthDate = dt;
                         }
                         else if (inDeath)
                         {
-                            this.individual.DeathDate = dt.Date;
+                            this.individual.DeathDate = dt;
                         }
                     }
                     break;

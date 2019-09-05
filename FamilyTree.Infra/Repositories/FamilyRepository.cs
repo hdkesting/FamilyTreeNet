@@ -35,9 +35,9 @@ namespace FamilyTree.Infra.Repositories
             }
 
             fam.IsDeleted = false;
-            fam.MarriageDate = family.MarriageDate;
+            fam.MarriageDateInt = family.MarriageDate?.ToInt32();
             fam.MarriagePlace = family.MarriagePlace;
-            fam.DivorceDate = family.DivorceDate;
+            fam.DivorceDateInt = family.DivorceDate?.ToInt32();
             fam.DivorcePlace = family.DivorcePlace;
 
             await this.context.SaveChangesAsync().ConfigureAwait(false);
@@ -139,9 +139,9 @@ namespace FamilyTree.Infra.Repositories
             var res = new FamilyDto
             {
                 Id = db.Id,
-                MarriageDate = db.MarriageDate,
+                MarriageDate = db.MarriageDateInt == null ? null : new FamilyTreeNet.Core.Support.GeneaDate(db.MarriageDateInt.Value),
                 MarriagePlace = db.MarriagePlace,
-                DivorceDate = db.DivorceDate,
+                DivorceDate = db.DivorceDateInt == null ? null : new FamilyTreeNet.Core.Support.GeneaDate(db.DivorceDateInt.Value),
                 DivorcePlace = db.DivorcePlace,
             };
 

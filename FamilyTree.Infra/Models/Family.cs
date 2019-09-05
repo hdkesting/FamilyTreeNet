@@ -11,12 +11,10 @@ namespace FamilyTree.Infra.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? MarriageDate { get; set; }
+        public int? MarriageDateInt { get; set; }
         public string MarriagePlace { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? DivorceDate { get; set; }
+        public int? DivorceDateInt { get; set; }
         public string DivorcePlace { get; set; }
 
         public bool IsDeleted { get; set; }

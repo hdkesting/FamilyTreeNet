@@ -1,4 +1,5 @@
 ﻿using FamilyTreeNet.Core.Dto;
+using FamilyTreeNet.Core.Support;
 using System;
 using System.Collections.Generic;
 
@@ -36,13 +37,13 @@ namespace FamilyTreeNet.ViewModels
 
         public long Id { get; set; }
 
-        public DateTime? MarriageDate { get; set; }
-        public string MarriageDateFmt => Utils.FormatDate(MarriageDate);
+        public GeneaDate MarriageDate { get; set; }
+        public string MarriageDateFmt => MarriageDate?.ToString();
 
         public string MarriagePlace { get; set; }
 
-        public DateTime? DivorceDate { get; set; }
-        public string DivorceDateFmt => Utils.FormatDate(DivorceDate);
+        public GeneaDate DivorceDate { get; set; }
+        public string DivorceDateFmt => DivorceDate?.ToString();
 
         public string DivorcePlace { get; set; }
 

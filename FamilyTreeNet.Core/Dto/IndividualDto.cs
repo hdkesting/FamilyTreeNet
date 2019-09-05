@@ -1,5 +1,4 @@
 ﻿using FamilyTreeNet.Core.Support;
-using System;
 using System.Collections.Generic;
 
 namespace FamilyTreeNet.Core.Dto
@@ -14,10 +13,12 @@ namespace FamilyTreeNet.Core.Dto
 
         public Sex Sex { get; set; }
 
-        public DateTime? BirthDate { get; set; }
+        public GeneaDate BirthDate { get; set; }
+
         public string BirthPlace { get; set; }
 
-        public DateTime? DeathDate { get; set; }
+        public GeneaDate DeathDate { get; set; }
+
         public string DeathPlace { get; set; }
 
         /// <summary>

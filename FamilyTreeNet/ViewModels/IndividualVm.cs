@@ -38,13 +38,13 @@ namespace FamilyTreeNet.ViewModels
 
         public Sex Sex { get; set; }
 
-        public DateTime? BirthDate { get; set; }
-        public string BirthDateFmt => Utils.FormatDate(this.BirthDate);
+        public GeneaDate BirthDate { get; set; }
+        public string BirthDateFmt => this.BirthDate?.ToString();
 
         public string BirthPlace { get; set; }
 
-        public DateTime? DeathDate { get; set; }
-        public string DeathDateFmt => Utils.FormatDate(this.DeathDate);
+        public GeneaDate DeathDate { get; set; }
+        public string DeathDateFmt => this.DeathDate?.ToString();
 
         public string DeathPlace { get; set; }
 
@@ -68,7 +68,7 @@ namespace FamilyTreeNet.ViewModels
         /// </value>
         public long PrimaryId { get; set; }
 
-        public bool DiedAtBirth => BirthDate != null && DeathDate != null && BirthDate.Value == DeathDate.Value;
+        public bool DiedAtBirth => BirthDate != null && DeathDate != null && BirthDate == DeathDate;
 
         public bool BirthDataKnown => BirthDate != null || !String.IsNullOrWhiteSpace(BirthPlace);
         public bool DeathDataKnown => DeathDate != null || !String.IsNullOrWhiteSpace(DeathPlace);

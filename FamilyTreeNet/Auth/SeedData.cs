@@ -50,7 +50,7 @@ namespace FamilyTreeNet.Auth
         private static async Task<IdentityResult> EnsureRole(IServiceProvider serviceProvider,
                                                                       string uid, string role)
         {
-            IdentityResult IR = null;
+            IdentityResult IR;
             var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
 
             if (roleManager == null)

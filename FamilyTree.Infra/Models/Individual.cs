@@ -17,12 +17,10 @@ namespace FamilyTree.Infra.Models
 
         public Char Sex { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? BirthDate { get; set; }
+        public int? BirthDateInt { get; set; }
         public string BirthPlace { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? DeathDate { get; set; }
+        public int? DeathDateInt { get; set; }
         public string DeathPlace { get; set; }
 
         public bool IsDeleted { get; set; }
