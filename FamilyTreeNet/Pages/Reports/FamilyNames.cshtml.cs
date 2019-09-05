@@ -21,7 +21,7 @@ namespace FamilyTreeNet.Pages.Reports
 
         public async Task OnGet()
         {
-            this.Names = await this.treeService.GetLastNames();
+            this.Names = await this.treeService.GetLastNames().ConfigureAwait(false);
         }
     }
 }

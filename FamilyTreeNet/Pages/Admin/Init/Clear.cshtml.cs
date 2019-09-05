@@ -22,7 +22,7 @@ namespace FamilyTreeNet.Pages.Admin.Init
         {
             if (String.Equals(sure, "yes", StringComparison.OrdinalIgnoreCase))
             {
-                await this.treeService.DeleteAll();
+                await this.treeService.DeleteAll().ConfigureAwait(false);
                 this.Message = "The database has been cleared.";
             }
 

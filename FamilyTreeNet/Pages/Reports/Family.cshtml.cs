@@ -25,7 +25,7 @@ namespace FamilyTreeNet.Pages.Reports
         public async Task OnGet(string name)
         {
             this.Lastname = name;
-            var list = await this.treeService.GetIndividualsByLastname(name);
+            var list = await this.treeService.GetIndividualsByLastname(name).ConfigureAwait(false);
 
             this.Individuals.Clear();
             this.Individuals.AddRange(list.Select(i => new IndividualVm(i)));

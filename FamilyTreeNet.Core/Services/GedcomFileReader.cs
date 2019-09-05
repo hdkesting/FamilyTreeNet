@@ -34,7 +34,7 @@ namespace FamilyTreeNet.Core.Services
                 if (pline.Level == 0)
                 {
                     // save previous object
-                    await objectReader.Store(this.treeService);
+                    await objectReader.Store(this.treeService).ConfigureAwait(false);
 
                     switch (pline.Value)
                     {
@@ -59,7 +59,7 @@ namespace FamilyTreeNet.Core.Services
             }
 
             // and store the last object (although that would be an ignored TRLR in a real file)
-            await objectReader.Store(this.treeService);
+            await objectReader.Store(this.treeService).ConfigureAwait(false);
         }
     }
 }

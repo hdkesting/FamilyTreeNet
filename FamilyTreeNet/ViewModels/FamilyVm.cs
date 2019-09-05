@@ -12,6 +12,11 @@ namespace FamilyTreeNet.ViewModels
 
         public FamilyVm(FamilyDto dto)
         {
+            if (dto is null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
+
             this.Id = dto.Id;
             this.MarriageDate = dto.MarriageDate;
             this.MarriagePlace = dto.MarriagePlace;

@@ -22,7 +22,7 @@ namespace FamilyTreeNet.Pages.Reports
 
         public async Task OnGet()
         {
-            var summary = await this.treeService.GetCountSummary();
+            var summary = await this.treeService.GetCountSummary().ConfigureAwait(false);
 
             this.Individuals = summary.IndividualCount;
             this.Families = summary.FamilyCount;

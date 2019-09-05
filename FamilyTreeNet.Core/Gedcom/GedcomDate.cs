@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -19,7 +20,7 @@ namespace FamilyTreeNet.Core.Gedcom
         private GedcomDate(DateTime date, bool isExact)
         {
             this.Date = date.Date;
-            this.IsExact = IsExact;
+            this.IsExact = isExact;
         }
 
         public static GedcomDate Parse(string value)
@@ -53,14 +54,13 @@ namespace FamilyTreeNet.Core.Gedcom
 
         private static DateTime GetDate(String day, String month, String year)
         {
-            int iday = int.Parse(day);
+            int iday = int.Parse(day, CultureInfo.InvariantCulture);
             int imonthEn = monthNamesEn.Select((m, i) => new { m, i = i + 1 }).Where(x => x.m.Equals(month, StringComparison.OrdinalIgnoreCase)).Select(x => x.i).FirstOrDefault();
             int imonthNl = monthNamesNl.Select((m, i) => new { m, i = i + 1 }).Where(x => x.m.Equals(month, StringComparison.OrdinalIgnoreCase)).Select(x => x.i).FirstOrDefault();
             int imonth = imonthEn > 0 ? imonthEn : imonthNl > 0 ? imonthNl : 1;
-            int iyear = int.Parse(year);
+            int iyear = int.Parse(year, CultureInfo.InvariantCulture);
 
             return new DateTime(iyear, imonth, iday);
         }
-
     }
 }

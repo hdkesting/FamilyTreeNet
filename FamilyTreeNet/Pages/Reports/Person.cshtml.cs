@@ -33,7 +33,7 @@ namespace FamilyTreeNet.Pages.Reports
 
         public async Task<IActionResult> OnGet(long id)
         {
-            var prim = await this.treeService.GetIndividualById(id);
+            var prim = await this.treeService.GetIndividualById(id).ConfigureAwait(false);
 
             if (prim == null)
             {
@@ -42,12 +42,12 @@ namespace FamilyTreeNet.Pages.Reports
 
             Primary = new IndividualVm(prim);
 
-            foreach(var spouseFam in await this.treeService.GetSpouseFamiliesByIndividualId(id, false))
+            foreach(var spouseFam in await this.treeService.GetSpouseFamiliesByIndividualId(id, false).ConfigureAwait(false))
             {
                 Marriages.Add(new FamilyVm(spouseFam));
             }
 
-            var childFams = await this.treeService.GetChildFamiliesByIndividualId(id, false);
+            var childFams = await this.treeService.GetChildFamiliesByIndividualId(id, false).ConfigureAwait(false);
             if (childFams.Any())
             {
                 ParentFamily = new FamilyVm(childFams.First());
@@ -55,7 +55,7 @@ namespace FamilyTreeNet.Pages.Reports
 
                 if (ParentFamily.Husband != null) // of id != 0 ?
                 {
-                    var fams = await this.treeService.GetChildFamiliesByIndividualId(ParentFamily.Husband.Id, false);
+                    var fams = await this.treeService.GetChildFamiliesByIndividualId(ParentFamily.Husband.Id, false).ConfigureAwait(false);
                     if (fams.Any())
                     {
                         PaternalGrandparents = new FamilyVm(fams.First());
@@ -64,7 +64,7 @@ namespace FamilyTreeNet.Pages.Reports
 
                 if (ParentFamily.Wife != null) // of id != 0 ?
                 {
-                    var fams = await this.treeService.GetChildFamiliesByIndividualId(ParentFamily.Wife.Id, false);
+                    var fams = await this.treeService.GetChildFamiliesByIndividualId(ParentFamily.Wife.Id, false).ConfigureAwait(false);
                     if (fams.Any())
                     {
                         MaternalGrandparents = new FamilyVm(fams.First());

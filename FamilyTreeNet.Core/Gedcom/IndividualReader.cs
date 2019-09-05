@@ -91,18 +91,18 @@ namespace FamilyTreeNet.Core.Gedcom
         public async Task Store(TreeService treeService)
         {
             System.Diagnostics.Debug.WriteLine("Individual {0}, {1} {2}", this.individual.Id, this.individual.Firstnames, this.individual.Lastname);
-            await treeService.Update(this.individual);
+            await treeService.Update(this.individual).ConfigureAwait(false);
         }
 
         private void ProcessName(string fullName)
         {
             // fullName is like "first name /lastname/", so split in "first name" and "lastname"
-            int p1 = fullName.IndexOf("/");
+            int p1 = fullName.IndexOf("/", StringComparison.Ordinal);
             string name = fullName.Substring(0, p1 - 1).Trim();
             this.individual.Firstnames = name;
-            int p2 = fullName.IndexOf("/", p1 + 1);
+            int p2 = fullName.IndexOf("/", p1 + 1, StringComparison.Ordinal);
             name = fullName.Substring(p1 + 1, p2 - p1 - 1);
-            if (name.StartsWith("??"))
+            if (name.StartsWith("??", StringComparison.Ordinal))
             {
                 name = "??";
             }

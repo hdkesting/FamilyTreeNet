@@ -21,8 +21,8 @@ namespace FamilyTreeNet.Auth
                 // dotnet user-secrets set SeedUserPW <pw>
                 // The admin user can do anything
 
-                var adminID = await EnsureUser(serviceProvider, testUserPw, "admin@example.com");
-                await EnsureRole(serviceProvider, adminID, Constants.AdminRole);
+                var adminID = await EnsureUser(serviceProvider, testUserPw, "admin@example.com").ConfigureAwait(false);
+                await EnsureRole(serviceProvider, adminID, Constants.AdminRole).ConfigureAwait(false);
 
                 //// allowed user can create and edit contacts that they create
                 //var managerID = await EnsureUser(serviceProvider, testUserPw, "manager@contoso.com");
@@ -37,11 +37,11 @@ namespace FamilyTreeNet.Auth
         {
             var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
 
-            var user = await userManager.FindByNameAsync(UserName);
+            var user = await userManager.FindByNameAsync(UserName).ConfigureAwait(false);
             if (user == null)
             {
                 user = new IdentityUser { UserName = UserName };
-                await userManager.CreateAsync(user, testUserPw);
+                await userManager.CreateAsync(user, testUserPw).ConfigureAwait(false);
             }
 
             return user.Id;
@@ -55,7 +55,7 @@ namespace FamilyTreeNet.Auth
 
             if (roleManager == null)
             {
-                throw new InvalidOperationException("roleManager null");
+                throw new InvalidOperationException("roleManager cannot be null");
             }
 
             //if (!await roleManager.RoleExistsAsync(role))
@@ -65,14 +65,14 @@ namespace FamilyTreeNet.Auth
 
             var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
 
-            var user = await userManager.FindByIdAsync(uid);
+            var user = await userManager.FindByIdAsync(uid).ConfigureAwait(false);
 
             if (user == null)
             {
                 throw new InvalidOperationException("The testUserPw password was probably not strong enough!");
             }
 
-            IR = await userManager.AddToRoleAsync(user, role);
+            IR = await userManager.AddToRoleAsync(user, role).ConfigureAwait(false);
 
             return IR;
         }

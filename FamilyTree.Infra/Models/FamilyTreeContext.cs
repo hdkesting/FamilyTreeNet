@@ -18,6 +18,11 @@ namespace FamilyTree.Infra.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            if (modelBuilder is null)
+            {
+                throw new ArgumentNullException(nameof(modelBuilder));
+            }
+
             // setup n:m relation table for spouses
             modelBuilder.Entity<SpouseRelation>()
                 .HasKey(sr => new { sr.SpouseId, sr.SpouseFamilyId });

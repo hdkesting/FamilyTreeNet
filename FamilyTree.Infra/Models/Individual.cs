@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace FamilyTree.Infra.Models
 {
@@ -34,7 +33,7 @@ namespace FamilyTree.Infra.Models
         /// <value>
         /// The spouse families.
         /// </value>
-        public List<SpouseRelation> SpouseFamilies { get; set; } = new List<SpouseRelation>();
+        public List<SpouseRelation> SpouseFamilies { get; } = new List<SpouseRelation>();
 
         /// <summary>
         /// Gets the families where this individual is a child.
@@ -42,7 +41,7 @@ namespace FamilyTree.Infra.Models
         /// <value>
         /// The child families.
         /// </value>
-        public List<ChildRelation> ChildFamilies { get; set; } = new List<ChildRelation>();
+        public List<ChildRelation> ChildFamilies { get; } = new List<ChildRelation>();
 
     }
 }

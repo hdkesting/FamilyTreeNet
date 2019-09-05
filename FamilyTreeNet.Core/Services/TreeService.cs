@@ -28,7 +28,7 @@ namespace FamilyTreeNet.Core.Services
         public async Task DeleteAll()
         {
             await this.familyRepository.DeleteAll().ConfigureAwait(false);
-            await this.individualRepository.DeleteAll();
+            await this.individualRepository.DeleteAll().ConfigureAwait(false);
         }
 
         public Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted) 
@@ -44,10 +44,10 @@ namespace FamilyTreeNet.Core.Services
         {
             var result = new Summary
             {
-                FamilyCount = await this.familyRepository.Count(true),
-                IndividualCount = await this.individualRepository.Count(true),
-                ChildCount = await this.individualRepository.GetTotalChildrenCount(),
-                SpouseCount = await this.individualRepository.GetTotalSpouseCount()
+                FamilyCount = await this.familyRepository.Count(true).ConfigureAwait(false),
+                IndividualCount = await this.individualRepository.Count(true).ConfigureAwait(false),
+                ChildCount = await this.individualRepository.GetTotalChildrenCount().ConfigureAwait(false),
+                SpouseCount = await this.individualRepository.GetTotalSpouseCount().ConfigureAwait(false)
             };
 
             return result;
@@ -56,7 +56,7 @@ namespace FamilyTreeNet.Core.Services
         public async Task Load(Stream gedcom)
         {
             var rdr = new GedcomFileReader(this);
-            await rdr.ReadFile(gedcom);
+            await rdr.ReadFile(gedcom).ConfigureAwait(false);
         }
 
         internal Task Update(IndividualDto individual)
@@ -76,7 +76,7 @@ namespace FamilyTreeNet.Core.Services
 
         private async Task UpdateImpl(IndividualDto individual)
         {
-            await this.individualRepository.AddOrUpdate(individual);
+            await this.individualRepository.AddOrUpdate(individual).ConfigureAwait(false);
 
         }
 
@@ -97,7 +97,7 @@ namespace FamilyTreeNet.Core.Services
 
         private async Task UpdateImpl(FamilyDto family)
         {
-            await this.familyRepository.AddOrUpdate(family);
+            await this.familyRepository.AddOrUpdate(family).ConfigureAwait(false);
         }
 
         internal Task UpdateRelations(long id, List<long> spouses, List<long> children)
