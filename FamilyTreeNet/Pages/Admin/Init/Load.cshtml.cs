@@ -28,7 +28,7 @@ namespace FamilyTreeNet.Pages.Admin.Init
                 var path = System.IO.Path.Combine(hostingEnvironment.ContentRootPath, "Resources/sampleFamily.ged");
                 using (var gedcom = System.IO.File.OpenRead(path))
                 {
-                    await this.treeService.Load(gedcom);
+                    await this.treeService.Load(gedcom).ConfigureAwait(false);
                 }
 
                 this.Message = "The database has been rewritten.";

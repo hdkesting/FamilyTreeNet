@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace FamilyTreeNet.ViewModels
 {
@@ -14,7 +12,7 @@ namespace FamilyTreeNet.ViewModels
                 return string.Empty;
             }
 
-            return date.Value.ToString("dd MMM yyyy");
+            return date.Value.ToString("dd MMM yyyy", CultureInfo.CurrentCulture);
         }
     }
 }

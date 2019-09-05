@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace FamilyTreeNet.Core.Gedcom
 {
@@ -13,7 +14,7 @@ namespace FamilyTreeNet.Core.Gedcom
         {
             reference = reference.Trim();
             reference = reference.Substring(2, reference.Length - 3); // cut off the "@I.." and "..@"
-            return long.Parse(reference);
+            return long.Parse(reference, CultureInfo.InvariantCulture);
         }
     }
 }

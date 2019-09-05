@@ -1,8 +1,6 @@
 ﻿using FamilyTree.Infra.Models;
 using FamilyTreeNet.Core.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -23,7 +21,12 @@ namespace FamilyTree.Infra.Repositories
 
         public async Task AddOrUpdate(FamilyDto family)
         {
-            var fam = await this.context.Families.FirstOrDefaultAsync(f => f.Id == family.Id);
+            if (family is null)
+            {
+                throw new System.ArgumentNullException(nameof(family));
+            }
+
+            var fam = await this.context.Families.FirstOrDefaultAsync(f => f.Id == family.Id).ConfigureAwait(false);
 
             if (fam == null)
             {
@@ -37,7 +40,7 @@ namespace FamilyTree.Infra.Repositories
             fam.DivorceDate = family.DivorceDate;
             fam.DivorcePlace = family.DivorcePlace;
 
-            await this.context.SaveChangesAsync();
+            await this.context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public Task<int> Count(bool includeDeleted) =>
@@ -51,7 +54,7 @@ namespace FamilyTree.Infra.Repositories
             
             var sql = "DELETE FROM " + this.context.Families.GetTableName();
 #pragma warning disable EF1000 // Possible SQL injection vulnerability.
-            await this.context.Database.ExecuteSqlCommandAsync(sql);
+            await this.context.Database.ExecuteSqlCommandAsync(sql).ConfigureAwait(false);
 #pragma warning restore EF1000 // Possible SQL injection vulnerability.
         }
 
@@ -62,12 +65,13 @@ namespace FamilyTree.Infra.Repositories
                 .Include(f => f.Children)
                 .Where(f => includeDeleted || !f.IsDeleted)
                 .Where(f => f.Children.Any(s => s.ChildId == id))
-                .ToListAsync();
+                .ToListAsync()
+                .ConfigureAwait(false);
 
             var res = new List<FamilyDto>();
             foreach (var fam in list)
             {
-                res.Add(await Map(fam, includeDeleted));
+                res.Add(await this.Map(fam, includeDeleted).ConfigureAwait(false));
             }
 
             return res;
@@ -80,12 +84,13 @@ namespace FamilyTree.Infra.Repositories
                 .Include(f => f.Children)
                 .Where(f => includeDeleted || !f.IsDeleted)
                 .Where(f => f.Spouses.Any(s => s.SpouseId == id))
-                .ToListAsync();
+                .ToListAsync()
+                .ConfigureAwait(false);
 
             var res = new List<FamilyDto>();
             foreach (var fam in list)
             {
-                res.Add(await Map(fam, includeDeleted));
+                res.Add(await this.Map(fam, includeDeleted).ConfigureAwait(false));
             }
 
             return res;
@@ -93,10 +98,21 @@ namespace FamilyTree.Infra.Repositories
 
         public async Task UpdateRelations(long familyId, List<long> spouses, List<long> children)
         {
+            if (spouses is null)
+            {
+                throw new System.ArgumentNullException(nameof(spouses));
+            }
+
+            if (children is null)
+            {
+                throw new System.ArgumentNullException(nameof(children));
+            }
+
             var fam = await this.context.Families
                 .Include(f => f.Spouses)
                 .Include(f => f.Children)
-                .FirstOrDefaultAsync(f => f.Id == familyId);
+                .FirstOrDefaultAsync(f => f.Id == familyId)
+                .ConfigureAwait(false);
 
             if (fam != null)
             {
@@ -112,7 +128,7 @@ namespace FamilyTree.Infra.Repositories
                     fam.Children.Add(new ChildRelation { ChildFamilyId = familyId, ChildId = childId });
                 }
 
-                await this.context.SaveChangesAsync();
+                await this.context.SaveChangesAsync().ConfigureAwait(false);
             }
 
             // else just ignore
@@ -131,12 +147,12 @@ namespace FamilyTree.Infra.Repositories
 
             foreach (var spouse in db.Spouses)
             {
-                res.Spouses.Add(await this.individualRepository.GetById(spouse.SpouseId, includeDeleted));
+                res.Spouses.Add(await this.individualRepository.GetById(spouse.SpouseId, includeDeleted).ConfigureAwait(false));
             }
 
             foreach(var child in db.Children)
             {
-                res.Children.Add(await this.individualRepository.GetById(child.ChildId, includeDeleted));
+                res.Children.Add(await this.individualRepository.GetById(child.ChildId, includeDeleted).ConfigureAwait(false));
             }
 
             return res;

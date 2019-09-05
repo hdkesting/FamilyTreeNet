@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FamilyTreeNet.Core.Services;
 using FamilyTreeNet.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FamilyTreeNet.Pages.Reports
 {
+    [AllowAnonymous]
     public class FamilyModel : PageModel
     {
         private readonly TreeService treeService;
@@ -25,7 +25,7 @@ namespace FamilyTreeNet.Pages.Reports
         public async Task OnGet(string name)
         {
             this.Lastname = name;
-            var list = await this.treeService.GetIndividualsByLastname(name);
+            var list = await this.treeService.GetIndividualsByLastname(name).ConfigureAwait(false);
 
             this.Individuals.Clear();
             this.Individuals.AddRange(list.Select(i => new IndividualVm(i)));

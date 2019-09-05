@@ -13,6 +13,11 @@ namespace FamilyTreeNet.ViewModels
 
         public IndividualVm(IndividualDto dto)
         {
+            if (dto is null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
+
             this.Id = dto.Id;
             this.Firstnames = dto.Firstnames;
             this.Lastname = dto.Lastname;

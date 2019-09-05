@@ -1,12 +1,13 @@
 ﻿using FamilyTree.Infra.Models;
-using FamilyTreeNet.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+
 using FamilyTreeNet.Core.Dto;
+using FamilyTreeNet.Core.Interfaces;
+
+using Microsoft.EntityFrameworkCore;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FamilyTree.Infra.Repositories
 {
@@ -21,7 +22,12 @@ namespace FamilyTree.Infra.Repositories
 
         public async Task AddOrUpdate(IndividualDto individual)
         {
-            var indi = await this.context.Individuals.FirstOrDefaultAsync(i => i.Id == individual.Id);
+            if (individual is null)
+            {
+                throw new System.ArgumentNullException(nameof(individual));
+            }
+
+            var indi = await this.context.Individuals.FirstOrDefaultAsync(i => i.Id == individual.Id).ConfigureAwait(false);
 
             if (indi == null)
             {
@@ -42,7 +48,7 @@ namespace FamilyTree.Infra.Repositories
             indi.DeathDate = individual.DeathDate;
             indi.DeathPlace = individual.DeathPlace;
 
-            await this.context.SaveChangesAsync();
+            await this.context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public Task<int> Count(bool includeDeleted) =>
@@ -52,14 +58,15 @@ namespace FamilyTree.Infra.Repositories
         {
             var sql = "DELETE FROM " + this.context.Individuals.GetTableName();
 #pragma warning disable EF1000 // Possible SQL injection vulnerability.
-            await this.context.Database.ExecuteSqlCommandAsync(sql);
+            await this.context.Database.ExecuteSqlCommandAsync(sql).ConfigureAwait(false);
 #pragma warning restore EF1000 // Possible SQL injection vulnerability.
         }
 
         public async Task<IndividualDto> GetById(long id, bool includeDeleted)
         {
             return Map(await this.context.Individuals
-                .FirstOrDefaultAsync(i => i.Id == id && (includeDeleted || !i.IsDeleted)));
+                .FirstOrDefaultAsync(i => i.Id == id && (includeDeleted || !i.IsDeleted))
+                .ConfigureAwait(false));
         }
 
         public async Task<List<IndividualDto>> GetIndividualsByLastname(string name)
@@ -67,7 +74,8 @@ namespace FamilyTree.Infra.Repositories
             var dblist= await this.context.Individuals
                 .Where(i => !i.IsDeleted)
                 .Where(i => i.Lastname == name)
-                .ToListAsync();
+                .ToListAsync()
+                .ConfigureAwait(false);
 
             return dblist.Select(Map).ToList();
         }

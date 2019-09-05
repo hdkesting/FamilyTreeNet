@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using FamilyTreeNet.Core.Dto;
 using FamilyTreeNet.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FamilyTreeNet.Pages.Reports
 {
+    [AllowAnonymous]
     public class FamilyNamesModel : PageModel
     {
         private readonly TreeService treeService;
@@ -19,7 +21,7 @@ namespace FamilyTreeNet.Pages.Reports
 
         public async Task OnGet()
         {
-            this.Names = await this.treeService.GetLastNames();
+            this.Names = await this.treeService.GetLastNames().ConfigureAwait(false);
         }
     }
 }

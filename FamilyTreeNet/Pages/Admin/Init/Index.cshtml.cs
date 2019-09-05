@@ -25,7 +25,7 @@ namespace FamilyTreeNet.Pages.Admin.Init
 
         public async Task OnGet()
         {
-            var summ = await this.treeService.GetCountSummary();
+            var summ = await this.treeService.GetCountSummary().ConfigureAwait(false);
             this.Individuals = summ.IndividualCount;
             this.Families = summ.FamilyCount;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace FamilyTreeNet.Core.Gedcom
@@ -23,7 +24,7 @@ namespace FamilyTreeNet.Core.Gedcom
             }
 
             string[] parts = line.Split(' ');
-            this.Level = int.Parse(parts[0]); // assuming this doesn't fail
+            this.Level = int.Parse(parts[0], CultureInfo.InvariantCulture); // assuming this doesn't fail
             if (parts.Length >= 2)
             {
                 this.Keyword = parts[1];
