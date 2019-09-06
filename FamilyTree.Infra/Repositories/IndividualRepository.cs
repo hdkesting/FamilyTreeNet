@@ -27,10 +27,15 @@ namespace FamilyTree.Infra.Repositories
                 throw new System.ArgumentNullException(nameof(individual));
             }
 
-            var indi = await this.context.Individuals.FirstOrDefaultAsync(i => i.Id == individual.Id).ConfigureAwait(false);
+            var indi = individual.Id == 0 ? null : await this.context.Individuals.FirstOrDefaultAsync(i => i.Id == individual.Id).ConfigureAwait(false);
 
             if (indi == null)
             {
+                if (individual.Id == 0)
+                {
+                    individual.Id = (await this.context.Individuals.Select(i => i.Id).MaxAsync().ConfigureAwait(false)) + 1;
+                }
+
                 indi = new Individual { Id = individual.Id };
                 this.context.Individuals.Add(indi);
             }

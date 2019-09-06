@@ -59,6 +59,26 @@ namespace FamilyTreeNet.Core.Services
             return result;
         }
 
+        public Task AddSpouse(long sfam, long id) => this.familyRepository.AddSpouse(sfam, id);
+
+        public Task AddChild(long cfam, long id) => this.familyRepository.AddChild(cfam, id);
+
+        public Task<long> AddPerson(IndividualDto indi)
+        {
+            if (indi is null)
+            {
+                throw new ArgumentNullException(nameof(indi));
+            }
+
+            return AddPersonImpl(indi);
+
+            async Task<long> AddPersonImpl(IndividualDto ind)
+            {
+                await this.individualRepository.AddOrUpdate(ind).ConfigureAwait(false);
+                return indi.Id;
+            }
+        }
+
         public async Task Load(Stream gedcom)
         {
             var rdr = new GedcomFileReader(this);

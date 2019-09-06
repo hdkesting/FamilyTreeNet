@@ -38,5 +38,7 @@ namespace FamilyTreeNet.Core.Interfaces
         Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted);
 
         Task<List<FamilyDto>> GetChildFamiliesByIndividualId(long id, bool includeDeleted);
+        Task AddSpouse(long sfam, long id);
+        Task AddChild(long cfam, long id);
     }
 }

@@ -19,28 +19,66 @@ namespace FamilyTree.Infra.Repositories
             this.individualRepository = individualRepository;
         }
 
-        public async Task AddOrUpdate(FamilyDto family)
+        public async Task AddChild(long cfam, long id)
+        {
+            var fam = await this.context.Families
+                .Include(f => f.Children)
+                .SingleOrDefaultAsync(f => f.Id == cfam).ConfigureAwait(false);
+            var child = await this.context.Individuals.SingleOrDefaultAsync(i => i.Id == id).ConfigureAwait(false);
+
+            if (fam != null && child != null && !fam.Children.Any(c => c.ChildId == id))
+            {
+                fam.Children.Add(new ChildRelation() { ChildFamilyId = cfam, ChildId = id });
+                await this.context.SaveChangesAsync().ConfigureAwait(false);
+            }
+        }
+
+        public Task AddOrUpdate(FamilyDto family)
         {
             if (family is null)
             {
                 throw new System.ArgumentNullException(nameof(family));
             }
 
-            var fam = await this.context.Families.FirstOrDefaultAsync(f => f.Id == family.Id).ConfigureAwait(false);
+            return AddOrUpdateImpl(family);
 
-            if (fam == null)
+            async Task AddOrUpdateImpl(FamilyDto fam2)
             {
-                fam = new Family { Id = family.Id };
-                this.context.Families.Add(fam);
+                var fam = fam2.Id == 0 ? null : await this.context.Families.FirstOrDefaultAsync(f => f.Id == fam2.Id).ConfigureAwait(false);
+
+                if (fam == null)
+                {
+                    if (fam2.Id == 0)
+                    {
+                        fam2.Id = (await this.context.Families.Select(i => i.Id).MaxAsync().ConfigureAwait(false)) + 1;
+                    }
+
+                    fam = new Family { Id = fam2.Id };
+                    this.context.Families.Add(fam);
+                }
+
+                fam.IsDeleted = false;
+                fam.MarriageDateInt = fam2.MarriageDate?.ToInt32();
+                fam.MarriagePlace = fam2.MarriagePlace;
+                fam.DivorceDateInt = fam2.DivorceDate?.ToInt32();
+                fam.DivorcePlace = fam2.DivorcePlace;
+
+                await this.context.SaveChangesAsync().ConfigureAwait(false);
             }
+        }
 
-            fam.IsDeleted = false;
-            fam.MarriageDateInt = family.MarriageDate?.ToInt32();
-            fam.MarriagePlace = family.MarriagePlace;
-            fam.DivorceDateInt = family.DivorceDate?.ToInt32();
-            fam.DivorcePlace = family.DivorcePlace;
+        public async Task AddSpouse(long sfam, long id)
+        {
+            var fam = await this.context.Families
+               .Include(f => f.Spouses)
+               .SingleOrDefaultAsync(f => f.Id == sfam).ConfigureAwait(false);
+            var spouse = await this.context.Individuals.SingleOrDefaultAsync(i => i.Id == id).ConfigureAwait(false);
 
-            await this.context.SaveChangesAsync().ConfigureAwait(false);
+            if (fam != null && spouse != null && !fam.Spouses.Any(s => s.SpouseId == id))
+            {
+                fam.Spouses.Add(new SpouseRelation() { SpouseFamilyId = sfam, SpouseId = id });
+                await this.context.SaveChangesAsync().ConfigureAwait(false);
+            }
         }
 
         public Task<int> Count(bool includeDeleted) =>

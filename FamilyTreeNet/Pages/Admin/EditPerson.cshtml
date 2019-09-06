@@ -8,6 +8,8 @@
 <h1>Edit page for <span class="name">@Model.Person.FullName</span> </h1>
 <form method="post" asp-page="EditPerson">
     <input type="hidden" name="primary" value="@Model.Primary" />
+    <input type="hidden" name="cfam" value="@Model.ChildFam" />
+    <input type="hidden" name="sfam" value="@Model.SpouseFam" />
     <input type="hidden" asp-for="@Model.Person.Id" />
 
     <div class="form-group">

@@ -38,7 +38,7 @@
                 else
                 {
                     <div class="parent">
-                        <a asp-page="AddPerson" asp-route-primary="@Model.Primary.Id" asp-route-sfam="@Model.ParentFamily.Id">add father</a>
+                        <a asp-page="EditPerson" asp-route-id="0" asp-route-primary="@Model.Primary.Id" asp-route-sfam="@Model.ParentFamily.Id">add father</a>
                     </div>
                 }
                 <partial name="_FamilyBlockAdmin" model="@WithPrimary(Model.ParentFamily, Model.Primary.Id)" />
@@ -49,7 +49,7 @@
                 else
                 {
                     <div class="parent">
-                        <a asp-page="AddPerson" asp-route-primary="@Model.Primary.Id" asp-route-sfam="@Model.ParentFamily.Id">add mother</a>
+                        <a asp-page="EditPerson" asp-route-id="0" asp-route-primary="@Model.Primary.Id" asp-route-sfam="@Model.ParentFamily.Id">add mother</a>
                     </div>
                 }
             </div>
@@ -58,7 +58,7 @@
         else
         {
         <td colspan="2">
-            <a asp-page="AddFamily" asp-route-primary="@Model.Primary.Id" asp-route-famtype="C">add parent family</a>
+            <a asp-page="EditFamily" asp-route-id="0" asp-route-primary="@Model.Primary.Id" asp-route-famtype="C">add parent family</a>
         </td>
         }
     </tr>
@@ -86,7 +86,7 @@
     @if ((fam.Wife == null || fam.Wife.Id == Model.Primary.Id) && (fam.Husband == null || fam.Husband.Id == Model.Primary.Id))
     {
         // only show "add spouse" when no spouse is known
-        <a asp-page="AddPerson" asp-route-primary="@Model.Primary.Id" asp-route-sfam="@fam.Id">add spouse</a>
+        <a asp-page="EditPerson" asp-route-id="0" asp-route-primary="@Model.Primary.Id" asp-route-sfam="@fam.Id">add spouse</a>
     }
 
     @if (fam.MarriageDate != null || !string.IsNullOrEmpty(fam.MarriagePlace))
@@ -119,14 +119,14 @@
 
         <p>
             <!-- always show "add child" -->
-            <a asp-page="AddPerson" asp-route-primary="@Model.Primary.Id" asp-route-cfam="@fam.Id">add child</a>
+            <a asp-page="EditPerson" asp-route-id="0" asp-route-primary="@Model.Primary.Id" asp-route-cfam="@fam.Id">add child</a>
         </p>
         <hr />
     </div>
 }
 <div>
     <!-- always show "add marriage" -->
-    <a asp-page="AddFamily" asp-route-primary="@Model.Primary.Id" asp-route-famtype="S">add marriage</a>
+    <a asp-page="EditFamily" asp-route-id="0" asp-route-primary="@Model.Primary.Id" asp-route-famtype="S">add marriage</a>
 </div>
 
 @functions {
