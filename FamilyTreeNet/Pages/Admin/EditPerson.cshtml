@@ -7,58 +7,53 @@
 
 <h1>Edit page for <span class="name">@Model.Person.FullName</span> </h1>
 <form method="post" asp-page="EditPerson">
-    <input type="hidden" name="primary" value="@Model.Primary">
+    <input type="hidden" name="primary" value="@Model.Primary" />
+    <input type="hidden" asp-for="@Model.Person.Id" />
 
     <div class="form-group">
         <label for="firstname">First name(s)</label>
-        <input type="text" id="firstname" name="@nameof(Model.Person.Firstnames)" class="form-control"
-               placeholder="Enter first name(s)" minlength="2" required 
-               value="@Model.Person.Firstnames"/>
+        <input type="text" id="firstname" asp-for="@Model.Person.Firstnames" class="form-control"
+               placeholder="Enter first name(s)" minlength="2" required />
     </div>
     <div class="form-group">
         <label for="lastname">Last name</label>
-        <input type="text" id="lastname" name="@nameof(Model.Person.Lastname)" class="form-control"
-               placeholder="Enter last name" minlength="2" required
-               value="@Model.Person.Lastname"/>
+        <input type="text" id="lastname" asp-for="@Model.Person.Lastname" class="form-control"
+               placeholder="Enter last name" minlength="2" required />
     </div>
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="@nameof(Model.Person.SexChar)" id="sexm" value="M" checked="@Model.Person.IsMale">
+        <input class="form-check-input" type="radio" asp-for="@Model.Person.SexChar" id="sexm" value="M" />
         <label class="form-check-label" for="sexm">👨 Male</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="@nameof(Model.Person.SexChar)" id="sexf" value="F" checked="@Model.Person.IsFemale">
+        <input class="form-check-input" type="radio" asp-for="@Model.Person.SexChar" id="sexf" value="F" />
         <label class="form-check-label" for="sexf">👩 Female</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="@nameof(Model.Person.SexChar)" id="sexu" value="-" checked="@(Model.Person.Sex == Core.Support.Sex.Unknown)">
+        <input class="form-check-input" type="radio" asp-for="@Model.Person.SexChar" id="sexu" value="?" />
         <label class="form-check-label" for="sexu">Unknown</label>
     </div>
 
     <div class="form-group">
         <label for="birthdate">Birth date</label>
-        <input type="date" id="birthdate" name="@nameof(Model.Person.BirthDateDate)" class="form-control"
-               placeholder="Birth date"
-               value="@Model.Person.BirthDateDate">
+        <input type="date" id="birthdate" asp-for="@Model.Person.BirthDateDate" class="form-control"
+               placeholder="Birth date" />
     </div>
     <div class="form-group">
         <label for="birthplace">Birth place</label>
-        <input type="text" id="birthplace" name="@nameof(Model.Person.BirthPlace)" class="form-control"
-               placeholder="Birth place"
-               value="@Model.Person.BirthPlace">
+        <input type="text" id="birthplace" asp-for="@Model.Person.BirthPlace" class="form-control"
+               placeholder="Birth place" />
     </div>
 
     <div class="form-group">
         <label for="deathdate">Date of death</label>
-        <input type="date" id="deathdate" name="@nameof(Model.Person.DeathDateDate)" class="form-control"
-               placeholder="Death date"
-               value="@Model.Person.DeathDateDate">
+        <input type="date" id="deathdate" asp-for="@Model.Person.DeathDateDate" class="form-control"
+               placeholder="Death date" />
     </div>
     <div class="form-group">
         <label for="deathplace">Place of death</label>
-        <input type="text" id="deathplace" name="@nameof(Model.Person.DeathPlace)" class="form-control"
-               placeholder="Death place"
-               value="@Model.Person.DeathPlace">
+        <input type="text" id="deathplace" asp-for="@Model.Person.DeathPlace" class="form-control"
+               placeholder="Death place" />
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
