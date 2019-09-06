@@ -52,6 +52,14 @@ namespace FamilyTreeNet.ViewModels
 
         public List<IndividualVm> Children { get; } = new List<IndividualVm>();
 
+        /// <summary>
+        /// Gets or sets the identifier of the "primary", for use in the Admin section.
+        /// </summary>
+        /// <value>
+        /// The primary identifier.
+        /// </value>
+        public long PrimaryId { get; set; }
+
         private void AddSpouse(IndividualVm spouse)
         {
             if (spouse.IsMale)

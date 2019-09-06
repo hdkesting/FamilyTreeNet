@@ -1,9 +1,153 @@
-﻿@page
+﻿@page "{id}"
 @model FamilyTreeNet.Pages.Admin.ShowPersonModel
+@using FamilyTreeNet.ViewModels
 @{
-    ViewData["Title"] = "ShowPerson";
+    ViewData["Title"] = "Show Person";
     Layout = "_AdminLayout";
 }
 
-<h1>ShowPerson</h1>
+<h1>Information about <span class="name">@Model.Primary.FullName</span></h1>
 
+<h2>Descent</h2>
+<table class="table table-bordered pedigree">
+    <tr>
+        <td colspan="2">
+            <!-- primary + siblings -->
+            <div>
+                <partial name="_PersonBlockAdmin" model="@WithCss(Model.Primary, "primary", Model.Primary.Id)" />
+                @foreach(var sib in Model.Siblings)
+                {
+                    <partial name="_PersonBlockAdmin" model="@WithCss(sib, "sibling", Model.Primary.Id)" />
+                }
+                @if (Model.ParentFamily.Id > 0)
+                {
+                    <a asp-page="AddPerson" asp-route-cfam="@Model.ParentFamily.Id" asp-route-primary="@Model.Primary.Id">add sibling</a>
+                }
+            </div>
+        </td>
+    </tr>
+    <tr>
+        @if (Model.ParentFamily.Id > 0)
+        {
+        <td colspan="2">
+            <div>
+                @if (Model.ParentFamily.Husband != null)
+                {
+                    <partial name="_PersonBlockAdmin" model="@WithCss(Model.ParentFamily.Husband, "parent", Model.Primary.Id)" />
+                }
+                else
+                {
+                    <div class="parent">
+                        <a asp-page="AddPerson" asp-route-primary="@Model.Primary.Id" asp-route-sfam="@Model.ParentFamily.Id">add father</a>
+                    </div>
+                }
+                <partial name="_FamilyBlockAdmin" model="@WithPrimary(Model.ParentFamily, Model.Primary.Id)" />
+                @if (Model.ParentFamily.Wife != null)
+                {
+                    <partial name="_PersonBlockAdmin" model="@WithCss(Model.ParentFamily.Wife, "parent", Model.Primary.Id)" />
+                }
+                else
+                {
+                    <div class="parent">
+                        <a asp-page="AddPerson" asp-route-primary="@Model.Primary.Id" asp-route-sfam="@Model.ParentFamily.Id">add mother</a>
+                    </div>
+                }
+            </div>
+        </td>
+        }
+        else
+        {
+        <td colspan="2">
+            <a asp-page="AddFamily" asp-route-primary="@Model.Primary.Id" asp-route-famtype="C">add parent family</a>
+        </td>
+        }
+    </tr>
+</table>
+
+<h2>Marriage(s)</h2>
+@foreach (var fam in Model.Marriages)
+{
+
+<div>
+    @if (fam.Wife != null && fam.Wife.Id != Model.Primary.Id)
+    {
+        <p>
+            <strong>Married to</strong>
+            <partial name="_PersonLineAdmin" model="@WithCss(fam.Wife, "", Model.Primary.Id)" />
+        </p>
+    }
+    @if (fam.Husband != null && fam.Husband.Id != Model.Primary.Id)
+    {
+        <p>
+            <strong>Married to</strong>
+            <partial name="_PersonLineAdmin" model="@WithCss(fam.Husband, "", Model.Primary.Id)" />
+        </p>
+    }
+    @if ((fam.Wife == null || fam.Wife.Id == Model.Primary.Id) && (fam.Husband == null || fam.Husband.Id == Model.Primary.Id))
+    {
+        // only show "add spouse" when no spouse is known
+        <a asp-page="AddPerson" asp-route-primary="@Model.Primary.Id" asp-route-sfam="@fam.Id">add spouse</a>
+    }
+
+    @if (fam.MarriageDate != null || !string.IsNullOrEmpty(fam.MarriagePlace))
+    {
+    <p><span title="Married">⚭</span> <span>@fam.MarriageDateFmt</span> <span>@fam.MarriagePlace</span></p>
+    }
+    @if (fam.DivorceDate != null || !string.IsNullOrEmpty(fam.DivorcePlace))
+    {
+        <p><span title="Divorced">⚮</span> <span>@fam.DivorceDateFmt</span> <span>@fam.DivorcePlace</span></p>
+    }
+
+    <span><a asp-page="EditFamily" asp-route-id="@fam.Id" asp-route-primary="@Model.Primary.Id" title="edit family">✏</a></span>
+
+    <h3>Children</h3>
+    @if (fam.Children.Any())
+    {
+        <ul>
+            @foreach(var child in fam.Children)
+            {
+                <li><partial name="_PersonLineAdmin" model="@WithCss(child, "", Model.Primary.Id)" /></li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>
+            <span>No (known) children</span>
+        </p>
+    }
+
+        <p>
+            <!-- always show "add child" -->
+            <a asp-page="AddPerson" asp-route-primary="@Model.Primary.Id" asp-route-cfam="@fam.Id">add child</a>
+        </p>
+        <hr />
+    </div>
+}
+<div>
+    <!-- always show "add marriage" -->
+    <a asp-page="AddFamily" asp-route-primary="@Model.Primary.Id" asp-route-famtype="S">add marriage</a>
+</div>
+
+@functions {
+    IndividualVm WithCss(IndividualVm person, string css, long primary)
+    {
+        if (person != null)
+        {
+            person.Css = css;
+            person.PrimaryId = primary;
+        }
+
+        return person;
+    }
+
+    FamilyVm WithPrimary(FamilyVm family, long primary)
+    {
+        if (family != null)
+        {
+            family.PrimaryId = primary;
+        }
+
+        return family;
+    }
+}

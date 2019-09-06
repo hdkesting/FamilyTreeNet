@@ -4,11 +4,11 @@
 {
 <div class="marriage">
     <p style="font-size: x-large">&times;</p>
-    @if (Model.MarriageDate != null)
+    @if (Model.MarriageDate != null || !string.IsNullOrEmpty(Model.MarriagePlace))
     {
     <p><span title="Married">⚭</span> <span>@Model.MarriageDateFmt</span> <span>@Model.MarriagePlace</span></p>
     }
-    @if (Model.DivorceDate != null)
+    @if (Model.DivorceDate != null || !string.IsNullOrEmpty(Model.DivorcePlace))
     {
     <p><span title="Divorced">⚮</span> <span>@Model.DivorceDateFmt</span> <span>@Model.DivorcePlace</span></p>
     }
