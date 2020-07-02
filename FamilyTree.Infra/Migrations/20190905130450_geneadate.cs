@@ -7,6 +7,11 @@ namespace FamilyTree.Infra.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder is null)
+            {
+                throw new ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropColumn(
                 name: "BirthDate",
                 table: "Individuals");
@@ -46,6 +51,11 @@ namespace FamilyTree.Infra.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder is null)
+            {
+                throw new ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropColumn(
                 name: "BirthDateInt",
                 table: "Individuals");

@@ -11,7 +11,7 @@ namespace FamilyTreeNet.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
     [Migration("20190904130158_auth")]
-    partial class auth
+    partial class authentication
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

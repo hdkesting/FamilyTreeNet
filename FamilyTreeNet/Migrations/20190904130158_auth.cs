@@ -4,10 +4,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FamilyTreeNet.Migrations
 {
-    public partial class auth : Migration
+    public partial class authentication : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder is null)
+            {
+                throw new ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -195,6 +200,11 @@ namespace FamilyTreeNet.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder is null)
+            {
+                throw new ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

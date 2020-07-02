@@ -7,6 +7,11 @@ namespace FamilyTree.Infra.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder is null)
+            {
+                throw new ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.CreateTable(
                 name: "Families",
                 columns: table => new
@@ -103,6 +108,11 @@ namespace FamilyTree.Infra.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder is null)
+            {
+                throw new ArgumentNullException(nameof(migrationBuilder));
+            }
+
             migrationBuilder.DropTable(
                 name: "ChildRelation");
 

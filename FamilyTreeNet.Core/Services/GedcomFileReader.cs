@@ -17,7 +17,7 @@ namespace FamilyTreeNet.Core.Services
         {
             using (StreamReader sr = new StreamReader(input))
             {
-                await ReadFile(sr);
+                await ReadFile(sr).ConfigureAwait(false);
                 return true;
             }
         }

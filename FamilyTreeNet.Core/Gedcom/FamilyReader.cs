@@ -91,8 +91,8 @@ namespace FamilyTreeNet.Core.Gedcom
         public async Task Store(TreeService treeService)
         {
             System.Diagnostics.Debug.WriteLine("Family {0}", this.family.Id);
-            await treeService.Update(this.family);
-            await treeService.UpdateRelations(this.family.Id, this.spouses, this.children);
+            await treeService.Update(this.family).ConfigureAwait(false);
+            await treeService.UpdateRelations(this.family.Id, this.spouses, this.children).ConfigureAwait(false);
         }
     }
 }
