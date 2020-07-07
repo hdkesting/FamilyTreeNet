@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FamilyTree.Infra.Models
+namespace FamilyTree.Infra.MySql.Models
 {
     public class Family
     {

@@ -1,6 +1,6 @@
 ﻿using Dapper;
 
-using FamilyTree.Infra.Models;
+using FamilyTree.Infra.MySql.Models;
 
 using FamilyTreeNet.Core.Dto;
 using FamilyTreeNet.Core.Interfaces;
@@ -152,14 +152,43 @@ WHERE ind.is_deleted = 0";
             }
         }
 
-        public Task MarkIndividualAsDeleted(long id)
+        public async Task MarkIndividualAsDeleted(long id)
         {
-            throw new NotImplementedException();
+            var sql = "UPDATE individual SET is_deleted=1 WHERE id = @Id";
+            using (var conn = new MySqlConnection(this.connStr))
+            {
+                await conn.ExecuteAsync(sql, new { id }).ConfigureAwait(false);
+            }
         }
 
-        public Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname)
+        public async Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname)
         {
-            throw new NotImplementedException();
+            var sql = "SELECT * FROM individual WHERE 1 = 1";
+            var parameters = new DynamicParameters();
+
+            if (!string.IsNullOrWhiteSpace(lastname))
+            {
+                sql += " AND lastname LIKE '%' + @Lastname + '%'";
+                parameters.Add("@Lastname", lastname);
+            }
+
+            // if multiple first names were given, match *all* parts in any order
+            if (!string.IsNullOrWhiteSpace(firstname))
+            {
+                var sa = firstname.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < sa.Length; i++)
+                {
+                    sql += $" AND firstname LIKE '%' + @First{i} + '%'";
+                    parameters.Add("@First" + i, sa[i]);
+                }
+            }
+
+            using (var conn = new MySqlConnection(this.connStr))
+            {
+                var list = await conn.QueryAsync<Individual>(sql, parameters).ConfigureAwait(false);
+
+                return list.Select(Map).ToList();
+            }
         }
 
         private IndividualDto Map(Individual indi)

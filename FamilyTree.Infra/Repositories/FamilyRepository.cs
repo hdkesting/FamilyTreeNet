@@ -138,12 +138,12 @@ namespace FamilyTree.Infra.Repositories
         {
             if (spouses is null)
             {
-                throw new System.ArgumentNullException(nameof(spouses));
+                spouses = new List<long>();
             }
 
             if (children is null)
             {
-                throw new System.ArgumentNullException(nameof(children));
+                children = new List<long>();
             }
 
             var fam = await this.context.Families
