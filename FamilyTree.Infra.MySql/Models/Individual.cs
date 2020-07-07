@@ -11,8 +11,20 @@ namespace FamilyTree.Infra.Models
 
         public string Lastname { get; set; }
 
+        /// <summary>
+        /// Gets or sets the sex: M=male, F=female, ?=unknown.
+        /// </summary>
+        /// <value>
+        /// The sex.
+        /// </value>
         public Char Sex { get; set; }
 
+        /// <summary>
+        /// Gets or sets the birth date, converted to int (yyyymmdda, supporting unknown parts and "accuracy").
+        /// </summary>
+        /// <value>
+        /// The birth date as int.
+        /// </value>
         public int? BirthDateInt { get; set; }
 
         public string BirthPlace { get; set; }
