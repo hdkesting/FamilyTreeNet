@@ -10,9 +10,9 @@ namespace FamilyTreeNet.Pages.Admin.Init
     public class LoadModel : PageModel
     {
         private readonly TreeService treeService;
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
-        public LoadModel(TreeService treeService, IHostingEnvironment hostingEnvironment)
+        public LoadModel(TreeService treeService, IWebHostEnvironment hostingEnvironment)
         {
             this.treeService = treeService;
             this.hostingEnvironment = hostingEnvironment;
@@ -36,6 +36,5 @@ namespace FamilyTreeNet.Pages.Admin.Init
 
             return RedirectToPage("./Index");
         }
-
     }
 }

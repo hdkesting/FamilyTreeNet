@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 //using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -83,7 +82,7 @@ namespace FamilyTreeNet
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            app.UseAuthentication();
+            //app.UseAuthentication();
             //// app.UseSession();
 
             app.UseMvc();

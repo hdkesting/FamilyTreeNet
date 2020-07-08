@@ -122,7 +122,7 @@ namespace FamilyTree.Infra.MySql.Repositories
 
         public async Task<List<NameCount>> GetLastNames()
         {
-            var sql = "SELECT lastname, count(1) as [Count] FROM individual GROUP BY lastname";
+            var sql = "SELECT lastname, count(1) as `Count` FROM individual GROUP BY lastname";
             using (var conn = new MySqlConnection(this.connStr))
             {
                 var list = await conn.QueryAsync<NameCount>(sql).ConfigureAwait(false);
@@ -133,7 +133,7 @@ namespace FamilyTree.Infra.MySql.Repositories
 
         public async Task<int> GetTotalChildrenCount()
         {
-            var sql = @"SELECT count(1) FROM individuals ind
+            var sql = @"SELECT count(1) FROM individual ind
 INNER JOIN children chil ON chil.individual_id = ind.id
 WHERE ind.is_deleted = 0";
             using (var conn = new MySqlConnection(this.connStr))
@@ -144,8 +144,8 @@ WHERE ind.is_deleted = 0";
 
         public async Task<int> GetTotalSpouseCount()
         {
-            var sql = @"SELECT count(1) FROM individuals ind
-INNER JOIN spouses sp ON chil.individual_spouse_id = ind.id
+            var sql = @"SELECT count(1) FROM individual ind
+INNER JOIN spouses sp ON sp.individual_spouse_id = ind.id
 WHERE ind.is_deleted = 0";
             using (var conn = new MySqlConnection(this.connStr))
             {
