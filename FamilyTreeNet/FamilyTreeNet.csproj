@@ -32,7 +32,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\FamilyTree.Infra\FamilyTree.Infra.csproj" />
+    <ProjectReference Include="..\FamilyTree.Infra.MySql\FamilyTree.Infra.MySql.csproj" />
     <ProjectReference Include="..\FamilyTreeNet.Core\FamilyTreeNet.Core.csproj" />
   </ItemGroup>
 

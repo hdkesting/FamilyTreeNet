@@ -1,6 +1,8 @@
 ﻿using Dapper;
 
 using FamilyTree.Infra.MySql.Models;
+using FamilyTree.Infra.MySql.Support;
+
 using FamilyTreeNet.Core.Dto;
 using FamilyTreeNet.Core.Interfaces;
 
@@ -19,9 +21,9 @@ namespace FamilyTree.Infra.MySql.Repositories
         private readonly string connStr;
         private readonly IIndividualRepository individualRepository;
 
-        public FamilyRepository(string connStr, IIndividualRepository individualRepository)
+        public FamilyRepository(MySqlDbOptions options, IIndividualRepository individualRepository)
         {
-            this.connStr = connStr;
+            this.connStr = options?.ConnectionString ?? throw new ArgumentException("No connection string configured", nameof(options));
             this.individualRepository = individualRepository;
         }
 

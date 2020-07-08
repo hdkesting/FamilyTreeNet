@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+//using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -32,26 +32,26 @@ namespace FamilyTreeNet
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<Auth.AuthDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<FamilyTreeNet.Auth.ApplicationUser>().AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<Auth.AuthDbContext>();
+            //services.AddDbContext<Auth.AuthDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDefaultIdentity<FamilyTreeNet.Auth.ApplicationUser>().AddRoles<IdentityRole>()
+            //    .AddEntityFrameworkStores<Auth.AuthDbContext>();
 
             // require login everywhere, except where explicitly marked with [AllowAnonymous]
             services.AddMvc(config =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                         .RequireAuthenticatedUser()
-                         .Build();
-                config.Filters.Add(new AuthorizeFilter(policy));
-            })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                             .RequireAuthenticatedUser()
+                             .Build();
+                    config.Filters.Add(new AuthorizeFilter(policy));
+                    config.EnableEndpointRouting = false;
+                });
 
             // https://stackoverflow.com/a/54813987/121309
             services.Configure<CookieTempDataProviderOptions>(options => {
                 options.Cookie.IsEssential = true;
             });
 
-            FamilyTree.Infra.StartupInfra.ConfigureServices(services, this.Configuration);
+            FamilyTree.Infra.MySql.StartupInfra.ConfigureServices(services, this.Configuration);
 
             services.AddTransient<TreeService>();
         }
