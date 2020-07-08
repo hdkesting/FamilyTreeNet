@@ -63,7 +63,7 @@ namespace FamilyTree.Infra.Repositories
         {
             var sql = "DELETE FROM " + this.context.Individuals.GetTableName();
 #pragma warning disable EF1000 // Possible SQL injection vulnerability.
-            await this.context.Database.ExecuteSqlCommandAsync(sql).ConfigureAwait(false);
+            await this.context.Database.ExecuteSqlRawAsync(sql).ConfigureAwait(false);
 #pragma warning restore EF1000 // Possible SQL injection vulnerability.
         }
 
