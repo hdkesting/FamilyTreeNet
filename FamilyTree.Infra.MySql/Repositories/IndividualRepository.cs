@@ -47,7 +47,7 @@ namespace FamilyTree.Infra.MySql.Repositories
                 if (count == 0)
                 {
                     sql = @"INSERT INTO individual (id, firstnames, lastname, sex, birth_date, birth_place, death_date, death_place, is_deleted)
-                            VALUES (@Id, @Firstnames, @Lastname, @BirthDateInt, @Sex, @BirthDateInt, @BirthPlace, @DeathDateInt, @DeathPlace, 0)";
+                            VALUES (@Id, @Firstnames, @Lastname, @Sex, @BirthDateInt, @BirthPlace, @DeathDateInt, @DeathPlace, 0)";
                 }
                 else
                 {
@@ -100,7 +100,12 @@ namespace FamilyTree.Infra.MySql.Repositories
         /// <returns></returns>
         public async Task<IndividualDto> GetById(long id, bool includeDeleted)
         {
-            var sql = "SELECT * FROM individual WHERE id=@Id";
+            // 1) mention all columns explicitly (better sql); 2) alias the columns to match the entity (snake_case to PascalCase)
+            var sql = @"SELECT id, firstnames, lastname, sex, 
+birth_date BirthDateInt, birth_place BirthPlace,
+death_date DeathDateInt, death_place DeathPlace,
+is_deleted IsDeleted
+FROM individual WHERE id=@Id";
             using (var conn = new MySqlConnection(this.connStr))
             {
                 var indi = await conn.QuerySingleOrDefaultAsync<Individual>(sql, new { id }).ConfigureAwait(false);
@@ -111,7 +116,11 @@ namespace FamilyTree.Infra.MySql.Repositories
 
         public async Task<List<IndividualDto>> GetIndividualsByLastname(string name)
         {
-            var sql = "SELECT * FROM individual WHERE lastname = @Name";
+            var sql = @"SELECT id, firstnames, lastname, sex, 
+birth_date BirthDateInt, birth_place BirthPlace,
+death_date DeathDateInt, death_place DeathPlace,
+is_deleted IsDeleted 
+FROM individual WHERE lastname = @Name";
             using (var conn = new MySqlConnection(this.connStr))
             {
                 var list = await conn.QueryAsync<Individual>(sql, new { name }).ConfigureAwait(false);
@@ -164,7 +173,11 @@ WHERE ind.is_deleted = 0";
 
         public async Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname)
         {
-            var sql = "SELECT * FROM individual WHERE 1 = 1";
+            var sql = @"SELECT  id, firstnames, lastname, sex, 
+birth_date BirthDateInt, birth_place BirthPlace,
+death_date DeathDateInt, death_place DeathPlace,
+is_deleted IsDeleted
+FROM individual WHERE 1 = 1";
             var parameters = new DynamicParameters();
 
             if (!string.IsNullOrWhiteSpace(lastname))
@@ -192,7 +205,7 @@ WHERE ind.is_deleted = 0";
             }
         }
 
-        private IndividualDto Map(Individual indi)
+        internal static IndividualDto Map(Individual indi)
         {
             if (indi is null)
             {
@@ -214,7 +227,7 @@ WHERE ind.is_deleted = 0";
             };
         }
 
-        private Individual Map(IndividualDto dto)
+        private static Individual Map(IndividualDto dto)
         {
             if (dto is null)
             {

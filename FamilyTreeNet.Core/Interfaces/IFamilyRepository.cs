@@ -36,7 +36,7 @@ namespace FamilyTreeNet.Core.Interfaces
         Task UpdateRelations(long familyId, List<long> spouses, List<long> children);
 
         /// <summary>
-        /// Gets the families where the individual (see id) is spouse.
+        /// Gets the families (including spouses and children) where the individual (see id) is spouse.
         /// </summary>
         /// <param name="id">The spouse's identifier.</param>
         /// <param name="includeDeleted">if set to <c>true</c>, also include deleted.</param>
@@ -44,7 +44,7 @@ namespace FamilyTreeNet.Core.Interfaces
         Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted);
 
         /// <summary>
-        /// Gets the families where the individual (see id) is child.
+        /// Gets the families (including spouses and children) where the individual (see id) is child.
         /// </summary>
         /// <param name="id">The child's identifier.</param>
         /// <param name="includeDeleted">if set to <c>true</c>, also include deleted.</param>

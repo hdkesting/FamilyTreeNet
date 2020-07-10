@@ -11,7 +11,6 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FamilyTree.Infra.MySql.Repositories
@@ -128,14 +127,17 @@ namespace FamilyTree.Infra.MySql.Repositories
         }
 
         /// <summary>
-        /// Gets the families where the individual (see id) is child.
+        /// Gets the families (including spouses and children) where the individual (see id) is child.
         /// </summary>
         /// <param name="id">The child's identifier.</param>
         /// <param name="includeDeleted">if set to <c>true</c>, also include deleted.</param>
         /// <returns></returns>
         public async Task<List<FamilyDto>> GetChildFamiliesByIndividualId(long id, bool includeDeleted)
         {
-            var sql = @"SELECT * FROM family f
+            var sql = @"SELECT id,
+marriage_date MarriageDateInt, marriage_place MarriagePlace,
+divorce_date DivorceDateInt, divorce_place DivorcePlace 
+FROM family f
 INNER JOIN children c ON c.family_id = f.id
 WHERE c.individual_id = @Id";
 
@@ -144,27 +146,34 @@ WHERE c.individual_id = @Id";
                 var l1 = await conn.QueryAsync<Family>(sql, new { id }).ConfigureAwait(false);
                 var l2 = l1.Select(async (f) => await Map(f, includeDeleted));
                 var l3 = await Task.WhenAll(l2);
+                await EnrichWithSpousesAndChildren(l3, conn).ConfigureAwait(false);
+ 
                 return l3.ToList();
             }
         }
 
         /// <summary>
-        /// Gets the families where the individual (see id) is spouse.
+        /// Gets the families (including spouses and children) where the individual (see id) is spouse.
         /// </summary>
         /// <param name="id">The spouse's identifier.</param>
         /// <param name="includeDeleted">if set to <c>true</c>, also include deleted.</param>
         /// <returns></returns>
         public async Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted)
         {
-            var sql = @"SELECT * FROM family f
+            var sql = @"SELECT id,
+marriage_date MarriageDateInt, marriage_place MarriagePlace,
+divorce_date DivorceDateInt, divorce_place DivorcePlace
+FROM family f
 INNER JOIN spouses s ON s.family_spouse_id = f.id
-WHERE c.individual_spouse_id = @Id";
+WHERE s.individual_spouse_id = @Id";
 
             using (var conn = new MySqlConnection(this.connStr))
             {
                 var l1 = await conn.QueryAsync<Family>(sql, new { id }).ConfigureAwait(false);
                 var l2 = l1.Select(async (f) => await Map(f, includeDeleted));
                 var l3 = await Task.WhenAll(l2);
+                await EnrichWithSpousesAndChildren(l3, conn).ConfigureAwait(false);
+
                 return l3.ToList();
             }
         }
@@ -208,11 +217,56 @@ WHERE c.individual_spouse_id = @Id";
 
                     // add the new *lists*
                     sql = "INSERT INTO children (family_id, individual_id) VALUES (@FamilyId, @ChildId)";
-                    await conn.ExecuteAsync(sql, new { FamilyId = familyId, ChildId = children });
+                    await conn.ExecuteAsync(sql, children.Select(c => new { familyId, ChildId = c }).ToList());
+                    
                     sql = "INSERT INTO spouses (family_spouse_id, individual_spouse_id) VALUES (@FamilyId, @SpouseId)";
-                    await conn.ExecuteAsync(sql, new { FamilyId = familyId, SpouseId = spouses });
+                    await conn.ExecuteAsync(sql, spouses.Select(s => new { familyId, SpouseId = s }).ToList());
                 }
             }
+        }
+
+        private async Task EnrichWithSpousesAndChildren(IEnumerable<FamilyDto> list, MySqlConnection conn)
+        {
+            foreach (var fam in list)
+            {
+                foreach (var sp in await GetSpousesByFamily(fam.Id, conn))
+                {
+                    fam.Spouses.Add(sp);
+                }
+
+                foreach (var ch in await GetChildrenByFamily(fam.Id, conn))
+                {
+                    fam.Children.Add(ch);
+                }
+            }
+        }
+
+        private async Task<List<IndividualDto>> GetSpousesByFamily(long familyId, MySqlConnection conn)
+        {
+            var sql = @"SELECT id, firstnames, lastname, sex, 
+birth_date BirthDateInt, birth_place BirthPlace,
+death_date DeathDateInt, death_place DeathPlace,
+is_deleted IsDeleted 
+FROM individual i
+INNER JOIN spouses s ON s.individual_spouse_id = i.id
+WHERE s.family_spouse_id = @FamilyId";
+
+            var list = await conn.QueryAsync<Individual>(sql, new { familyId });
+            return list.Select(IndividualRepository.Map).ToList();
+        }
+
+        private async Task<List<IndividualDto>> GetChildrenByFamily(long familyId, MySqlConnection conn)
+        {
+            var sql = @"SELECT id, firstnames, lastname, sex, 
+birth_date BirthDateInt, birth_place BirthPlace,
+death_date DeathDateInt, death_place DeathPlace,
+is_deleted IsDeleted 
+FROM individual i
+INNER JOIN children c ON c.individual_id = i.id
+WHERE c.family_id = @FamilyId";
+
+            var list = await conn.QueryAsync<Individual>(sql, new { familyId });
+            return list.Select(IndividualRepository.Map).ToList();
         }
 
         private Family Map(FamilyDto dto) =>
