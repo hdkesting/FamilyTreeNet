@@ -92,7 +92,7 @@ namespace FamilyTree.Infra.Repositories
             
             var sql = "DELETE FROM " + this.context.Families.GetTableName();
 #pragma warning disable EF1000 // Possible SQL injection vulnerability.
-            await this.context.Database.ExecuteSqlCommandAsync(sql).ConfigureAwait(false);
+            await this.context.Database.ExecuteSqlRawAsync(sql).ConfigureAwait(false);
 #pragma warning restore EF1000 // Possible SQL injection vulnerability.
         }
 
@@ -138,12 +138,12 @@ namespace FamilyTree.Infra.Repositories
         {
             if (spouses is null)
             {
-                throw new System.ArgumentNullException(nameof(spouses));
+                spouses = new List<long>();
             }
 
             if (children is null)
             {
-                throw new System.ArgumentNullException(nameof(children));
+                children = new List<long>();
             }
 
             var fam = await this.context.Families

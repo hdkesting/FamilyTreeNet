@@ -2,14 +2,15 @@
 {
     public class NameCount
     {
-        public NameCount(string lastname, int count)
+        public NameCount(string lastname, long count)
         {
             this.Lastname = lastname;
             this.Count = count;
         }
 
         public string Lastname { get; }
-        public int Count { get; }
+
+        public long Count { get; }
 
         public override string ToString() => $"{Lastname} ({Count})";
     }

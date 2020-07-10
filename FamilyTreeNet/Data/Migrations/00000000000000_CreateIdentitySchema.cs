@@ -1,25 +1,20 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FamilyTreeNet.Migrations
+namespace FamilyTreeNet.Data.Migrations
 {
-    public partial class authentication : Migration
+    public partial class CreateIdentitySchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            if (migrationBuilder is null)
-            {
-                throw new ArgumentNullException(nameof(migrationBuilder));
-            }
-
+            // for some reason I had to add or change maxlengths, apparently the default length wasn't picked up?
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(nullable: false, maxLength:256),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(maxLength: 257, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -31,11 +26,11 @@ namespace FamilyTreeNet.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(nullable: false, maxLength:256),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 257, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 257, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
@@ -57,10 +52,10 @@ namespace FamilyTreeNet.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RoleId = table.Column<string>(nullable: false, maxLength: 256),
+                    ClaimType = table.Column<string>(nullable: true, maxLength: 256),
+                    ClaimValue = table.Column<string>(nullable: true, maxLength: 256)
                 },
                 constraints: table =>
                 {
@@ -78,10 +73,10 @@ namespace FamilyTreeNet.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(nullable: false, maxLength: 256),
+                    ClaimType = table.Column<string>(nullable: true, maxLength: 256),
+                    ClaimValue = table.Column<string>(nullable: true, maxLength: 256)
                 },
                 constraints: table =>
                 {
@@ -98,10 +93,10 @@ namespace FamilyTreeNet.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
-                    ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    LoginProvider = table.Column<string>(maxLength: 228, nullable: false),
+                    ProviderKey = table.Column<string>(maxLength: 228, nullable: false),
+                    ProviderDisplayName = table.Column<string>(nullable: true, maxLength: 256),
+                    UserId = table.Column<string>(nullable: false, maxLength: 256)
                 },
                 constraints: table =>
                 {
@@ -118,8 +113,8 @@ namespace FamilyTreeNet.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(nullable: false, maxLength: 256),
+                    RoleId = table.Column<string>(nullable: false, maxLength: 256)
                 },
                 constraints: table =>
                 {
@@ -142,10 +137,10 @@ namespace FamilyTreeNet.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    Name = table.Column<string>(maxLength: 128, nullable: false),
-                    Value = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: false, maxLength: 256),
+                    LoginProvider = table.Column<string>(maxLength: 228, nullable: false),
+                    Name = table.Column<string>(maxLength: 129, nullable: false),
+                    Value = table.Column<string>(nullable: true, maxLength: 256)
                 },
                 constraints: table =>
                 {
@@ -167,8 +162,7 @@ namespace FamilyTreeNet.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -194,17 +188,11 @@ namespace FamilyTreeNet.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            if (migrationBuilder is null)
-            {
-                throw new ArgumentNullException(nameof(migrationBuilder));
-            }
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

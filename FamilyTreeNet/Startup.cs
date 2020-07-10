@@ -1,5 +1,7 @@
 using FamilyTreeNet.Core.Services;
+using FamilyTreeNet.Data;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace FamilyTreeNet
 {
@@ -32,33 +35,62 @@ namespace FamilyTreeNet
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<Auth.AuthDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<FamilyTreeNet.Auth.ApplicationUser>().AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<Auth.AuthDbContext>();
+            services.AddDbContext<AuthDbContext>(options =>
+                options.UseMySql(
+                    Configuration.GetConnectionString("AuthConnection")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AuthDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
+
+           // services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/LogIn");
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(
+            //        CookieAuthenticationDefaults.AuthenticationScheme,
+            //        options =>
+            //        {
+            //            //options.LoginPath = new PathString("/Auth/Login");
+            //            //options.AccessDeniedPath = new PathString("/Auth/Denied");
+            //        });
+
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // require login everywhere, except where explicitly marked with [AllowAnonymous]
             services.AddMvc(config =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                         .RequireAuthenticatedUser()
-                         .Build();
-                config.Filters.Add(new AuthorizeFilter(policy));
-            })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                             .RequireAuthenticatedUser()
+                             .Build();
+                    config.Filters.Add(new AuthorizeFilter(policy));
+                    config.EnableEndpointRouting = false;
+                });
 
             // https://stackoverflow.com/a/54813987/121309
             services.Configure<CookieTempDataProviderOptions>(options => {
                 options.Cookie.IsEssential = true;
             });
 
-            FamilyTree.Infra.StartupInfra.ConfigureServices(services, this.Configuration);
+            FamilyTree.Infra.MySql.StartupInfra.ConfigureServices(services, this.Configuration);
 
             services.AddTransient<TreeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (app is null)
+            {
+                throw new System.ArgumentNullException(nameof(app));
+            }
+
+            if (env is null)
+            {
+                throw new System.ArgumentNullException(nameof(env));
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -76,7 +108,10 @@ namespace FamilyTreeNet
             app.UseAuthentication();
             //// app.UseSession();
 
+            app.UseRouting();
             app.UseMvc();
+
+            app.UseEndpoints(endpoints => endpoints.MapRazorPages());
         }
     }
 }

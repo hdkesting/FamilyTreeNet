@@ -7,9 +7,9 @@ namespace FamilyTreeNet.Core.Interfaces
     public interface IIndividualRepository
     {
         /// <summary>
-        /// Counts the individuals, possibly including deleted ones.
+        /// Counts the individuals, possibly including soft-deleted ones.
         /// </summary>
-        /// <param name="includeDeleted">if set to <c>true</c> [include deleted].</param>
+        /// <param name="includeDeleted">if set to <c>true</c>, also include soft-deleted ones.</param>
         /// <returns></returns>
         Task<int> Count(bool includeDeleted);
 
@@ -26,6 +26,12 @@ namespace FamilyTreeNet.Core.Interfaces
         /// <returns></returns>
         Task<int> GetTotalChildrenCount();
 
+        /// <summary>
+        /// Gets the individual by their identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="includeDeleted">if set to <c>true</c>, also include a deleted one.</param>
+        /// <returns></returns>
         Task<IndividualDto> GetById(long id, bool includeDeleted);
 
         /// <summary>
@@ -35,13 +41,23 @@ namespace FamilyTreeNet.Core.Interfaces
         /// <param name="lastname">The lastname.</param>
         /// <returns></returns>
         Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname);
+
+        /// <summary>
+        /// Marks the individual as deleted (soft delete).
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         Task MarkIndividualAsDeleted(long id);
 
         /// <summary>
-        /// Deletes all individuals.
+        /// Deletes all individuals from the database (hard delete).
         /// </summary>
         /// <returns></returns>
         Task DeleteAll();
+
+        /// <summary>Gets the individuals by their lastname.</summary>
+        /// <param name="name">The exact name to search for.</param>
+        /// <returns></returns>
         Task<List<IndividualDto>> GetIndividualsByLastname(string name);
 
         /// <summary>
