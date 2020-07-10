@@ -21,6 +21,8 @@ namespace FamilyTree.Infra.MySql
                     { 
                         ConnectionString = configuration.GetConnectionString("MySqlConnection") 
                     });
+
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
     }
 }

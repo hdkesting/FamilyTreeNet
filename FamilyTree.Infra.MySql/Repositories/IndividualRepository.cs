@@ -102,10 +102,15 @@ namespace FamilyTree.Infra.MySql.Repositories
         {
             // 1) mention all columns explicitly (better sql); 2) alias the columns to match the entity (snake_case to PascalCase)
             var sql = @"SELECT id, firstnames, lastname, sex, 
-birth_date BirthDateInt, birth_place BirthPlace,
-death_date DeathDateInt, death_place DeathPlace,
-is_deleted IsDeleted
+birth_date BirthDateInt, birth_place,
+death_date DeathDateInt, death_place,
+is_deleted
 FROM individual WHERE id=@Id";
+//            var sql = @"SELECT id, firstnames, lastname, sex, 
+//birth_date BirthDateInt, birth_place BirthPlace,
+//death_date DeathDateInt, death_place DeathPlace,
+//is_deleted IsDeleted
+//FROM individual WHERE id=@Id";
             using (var conn = new MySqlConnection(this.connStr))
             {
                 var indi = await conn.QuerySingleOrDefaultAsync<Individual>(sql, new { id }).ConfigureAwait(false);
@@ -117,9 +122,9 @@ FROM individual WHERE id=@Id";
         public async Task<List<IndividualDto>> GetIndividualsByLastname(string name)
         {
             var sql = @"SELECT id, firstnames, lastname, sex, 
-birth_date BirthDateInt, birth_place BirthPlace,
-death_date DeathDateInt, death_place DeathPlace,
-is_deleted IsDeleted 
+birth_date BirthDateInt, birth_place,
+death_date DeathDateInt, death_place,
+is_deleted 
 FROM individual WHERE lastname = @Name";
             using (var conn = new MySqlConnection(this.connStr))
             {
@@ -174,9 +179,9 @@ WHERE ind.is_deleted = 0";
         public async Task<IEnumerable<IndividualDto>> SearchByName(string firstname, string lastname)
         {
             var sql = @"SELECT  id, firstnames, lastname, sex, 
-birth_date BirthDateInt, birth_place BirthPlace,
-death_date DeathDateInt, death_place DeathPlace,
-is_deleted IsDeleted
+birth_date BirthDateInt, birth_place,
+death_date DeathDateInt, death_place,
+is_deleted
 FROM individual WHERE 1 = 1";
             var parameters = new DynamicParameters();
 

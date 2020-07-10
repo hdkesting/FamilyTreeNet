@@ -135,8 +135,8 @@ namespace FamilyTree.Infra.MySql.Repositories
         public async Task<List<FamilyDto>> GetChildFamiliesByIndividualId(long id, bool includeDeleted)
         {
             var sql = @"SELECT id,
-marriage_date MarriageDateInt, marriage_place MarriagePlace,
-divorce_date DivorceDateInt, divorce_place DivorcePlace 
+marriage_date MarriageDateInt, marriage_place,
+divorce_date DivorceDateInt, divorce_place 
 FROM family f
 INNER JOIN children c ON c.family_id = f.id
 WHERE c.individual_id = @Id";
@@ -161,8 +161,8 @@ WHERE c.individual_id = @Id";
         public async Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted)
         {
             var sql = @"SELECT id,
-marriage_date MarriageDateInt, marriage_place MarriagePlace,
-divorce_date DivorceDateInt, divorce_place DivorcePlace
+marriage_date MarriageDateInt, marriage_place,
+divorce_date DivorceDateInt, divorce_place
 FROM family f
 INNER JOIN spouses s ON s.family_spouse_id = f.id
 WHERE s.individual_spouse_id = @Id";
@@ -244,9 +244,9 @@ WHERE s.individual_spouse_id = @Id";
         private async Task<List<IndividualDto>> GetSpousesByFamily(long familyId, MySqlConnection conn)
         {
             var sql = @"SELECT id, firstnames, lastname, sex, 
-birth_date BirthDateInt, birth_place BirthPlace,
-death_date DeathDateInt, death_place DeathPlace,
-is_deleted IsDeleted 
+birth_date BirthDateInt, birth_place,
+death_date DeathDateInt, death_place,
+is_deleted 
 FROM individual i
 INNER JOIN spouses s ON s.individual_spouse_id = i.id
 WHERE s.family_spouse_id = @FamilyId";
@@ -258,9 +258,9 @@ WHERE s.family_spouse_id = @FamilyId";
         private async Task<List<IndividualDto>> GetChildrenByFamily(long familyId, MySqlConnection conn)
         {
             var sql = @"SELECT id, firstnames, lastname, sex, 
-birth_date BirthDateInt, birth_place BirthPlace,
-death_date DeathDateInt, death_place DeathPlace,
-is_deleted IsDeleted 
+birth_date BirthDateInt, birth_place,
+death_date DeathDateInt, death_place,
+is_deleted 
 FROM individual i
 INNER JOIN children c ON c.individual_id = i.id
 WHERE c.family_id = @FamilyId";
