@@ -35,6 +35,7 @@ namespace FamilyTreeNet
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // set up auth db
             services.AddDbContext<AuthDbContext>(options =>
                 options.UseMySql(
                     Configuration.GetConnectionString("AuthConnection")));
@@ -44,21 +45,8 @@ namespace FamilyTreeNet
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 
-           // services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/LogIn");
-
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddCookie(
-            //        CookieAuthenticationDefaults.AuthenticationScheme,
-            //        options =>
-            //        {
-            //            //options.LoginPath = new PathString("/Auth/Login");
-            //            //options.AccessDeniedPath = new PathString("/Auth/Denied");
-            //        });
-
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-
             // require login everywhere, except where explicitly marked with [AllowAnonymous]
+            // for access only to specific roles, add [Authorize(Roles = "...")]. Roles to add: admin, editor
             services.AddMvc(config =>
                 {
                     var policy = new AuthorizationPolicyBuilder()
