@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FamilyTreeNet.Pages.Admin
 {
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "editor")]
     public class ShowPersonModel : PageModel
     {
         private readonly TreeService treeService;

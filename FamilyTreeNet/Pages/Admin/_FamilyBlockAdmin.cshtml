@@ -6,11 +6,11 @@
     <p style="font-size: x-large">&times;</p>
     @if (Model.MarriageDate != null || !string.IsNullOrEmpty(Model.MarriagePlace))
     {
-        <p><span title="Married">⚭</span> <span>@Model.MarriageDateFmt</span> <span>@Model.MarriagePlace</span></p>
+        <p><span title="Married" class="symbol">⚭</span> <span>@Model.MarriageDateFmt</span> <span>@Model.MarriagePlace</span></p>
     }
     @if (Model.DivorceDate != null || !string.IsNullOrEmpty(Model.DivorcePlace))
     {
-        <p><span title="Divorced">⚮</span> <span>@Model.DivorceDateFmt</span> <span>@Model.DivorcePlace</span></p>
+        <p><span title="Divorced" class="symbol">⚮</span> <span>@Model.DivorceDateFmt</span> <span>@Model.DivorcePlace</span></p>
     }
     <p>
         <a asp-page="EditFamily" asp-route-id="@Model.Id" asp-route-primary="@Model.PrimaryId" title="edit family">✏</a>

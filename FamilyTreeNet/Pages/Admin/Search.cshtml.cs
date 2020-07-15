@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FamilyTreeNet.Pages.Admin
 {
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles ="editor")]
     public class SearchModel : PageModel
     {
         private readonly TreeService treeService;

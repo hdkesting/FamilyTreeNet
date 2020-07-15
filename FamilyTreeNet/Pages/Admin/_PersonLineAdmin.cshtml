@@ -5,11 +5,11 @@
     <span>
         @if (Model.IsMale)
         {
-            <text>👨</text>
+            <span class="symbol">👨</span>
         }
         @if (Model.IsFemale)
         {
-            <text>👩</text>
+            <span class="symbol">👩</span>
         }
         <text>@Model.Firstnames</text>
         <span class="lastname">@Model.Lastname</span>
@@ -18,17 +18,18 @@
         <a asp-page="DeletePerson" asp-route-id="@Model.Id" asp-route-primary="@Model.PrimaryId" title="delete">🗑</a>
         @if (Model.DiedAtBirth)
         {
-            <text>, ✤&dagger;</text>@($"{Model.BirthDateFmt} {Model.BirthPlace}")
+            // stillborn or died right after birth
+            <text>, </text><span class="symbol">✤&dagger;</span> @($"{Model.BirthDateFmt} {Model.BirthPlace}")
         }
         else
-        {
+        { 
             if (Model.BirthDataKnown)
             {
-                <text>, ✤ </text>@($"{Model.BirthDateFmt} {Model.BirthPlace}")
+                <text>, </text><span class="symbol">✤</span> @($"{Model.BirthDateFmt} {Model.BirthPlace}")
             }
             if (Model.DeathDataKnown)
             {
-                <text>, &dagger; </text>@($"{Model.DeathDateFmt} {Model.DeathPlace}")
+                <text>, </text><span class="symbol">&dagger;</span> @($"{Model.DeathDateFmt} {Model.DeathPlace}")
             }
         }
     </span>

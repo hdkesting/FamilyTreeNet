@@ -187,7 +187,7 @@ FROM individual WHERE 1 = 1";
 
             if (!string.IsNullOrWhiteSpace(lastname))
             {
-                sql += " AND lastname LIKE '%' + @Lastname + '%'";
+                sql += " AND lastname LIKE concat('%', @Lastname, '%')";
                 parameters.Add("@Lastname", lastname);
             }
 
@@ -197,8 +197,8 @@ FROM individual WHERE 1 = 1";
                 var sa = firstname.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 for (int i = 0; i < sa.Length; i++)
                 {
-                    sql += $" AND firstname LIKE '%' + @First{i} + '%'";
-                    parameters.Add("@First" + i, sa[i]);
+                    sql += $" AND firstnames LIKE concat('%', @First{i}, '%')";
+                    parameters.Add("@First" + i, sa[i], System.Data.DbType.String);
                 }
             }
 

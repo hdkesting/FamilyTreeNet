@@ -6,11 +6,11 @@
         <p>
             @if (Model.IsMale)
             {
-                <span>👨</span>
+                <span class="symbol">👨</span>
             }
             else if (Model.IsFemale)
             {
-                <span>👩</span>
+                <span class="symbol">👩</span>
             }
             <span>@Model.Firstnames</span>
             <span class="lastname">@Model.Lastname</span>
@@ -20,17 +20,17 @@
         </p>
         @if (Model.DiedAtBirth)
         {
-            <p>✤&dagger; @($"{Model.BirthDateFmt} {Model.BirthPlace}")</p>
+            <p><span class="symbol">✤&dagger;</span> @($"{Model.BirthDateFmt} {Model.BirthPlace}")</p>
         }
         else
         {
             if (Model.BirthDataKnown)
             {
-                <p>✤ @($"{Model.BirthDateFmt} {Model.BirthPlace}")</p>
+                <p><span class="symbol">✤</span> @($"{Model.BirthDateFmt} {Model.BirthPlace}")</p>
             }
             if (Model.DeathDataKnown)
             {
-                <p>&dagger; @($"{Model.DeathDateFmt} {Model.DeathPlace}")</p>
+                <p><span class="symbol">&dagger;</span> @($"{Model.DeathDateFmt} {Model.DeathPlace}")</p>
             }
         }
     </div>
