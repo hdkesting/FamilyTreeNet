@@ -16,20 +16,20 @@
                     <a asp-page="Person" asp-route-id="@person.Id">@person.Firstnames</a>
                     @if (person.IsMale)
                     {
-                        <strong>&male;👨</strong>
+                        <span class="symbol">&male;</span>
                     }
                     @if (person.IsFemale)
                     {
-                        <strong>&female;👩</strong>
+                        <span class="symbol">&female;</span>
                     }
                 </p>
                 @if (person.BirthDate != null)
                 {
-                    <p>✤ <span>@person.BirthDateFmt</span> <span>@person.BirthPlace</span></p>
+                    <p><span class="symbol">✤</span> <span>@person.BirthDateFmt</span> <span>@person.BirthPlace</span></p>
                 }
                 @if (person.DeathDate != null)
                 {
-                    <p>&dagger; <span>@person.DeathDateFmt</span> <span>@person.DeathPlace</span></p>
+                    <p><span class="symbol">&dagger;</span> <span>@person.DeathDateFmt</span> <span>@person.DeathPlace</span></p>
                 }
             </div>
         }

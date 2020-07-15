@@ -133,3 +133,8 @@ ul.menu li {
     ul.menu li:before {
         content: "👉 ";
     }
+
+span.symbol {
+    font-size: 18pt;
+    font-weight: bold;
+}

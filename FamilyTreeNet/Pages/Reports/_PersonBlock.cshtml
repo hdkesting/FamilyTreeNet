@@ -10,26 +10,26 @@
             </a>
             @if (Model.IsMale)
             {
-                <strong>&male;👨</strong>
+                <span class="symbol">&male;</span>
             }
             else if (Model.IsFemale)
             {
-                <strong>&female;👩</strong>
+                <span class="symbol">&female;</span>
             }
         </p>
         @if (Model.DiedAtBirth)
         {
-            <p>✤&dagger; <span>@Model.BirthDateFmt</span> <span>@Model.BirthPlace</span></p>
+            <p><span class="symbol">✤&dagger;</span> <span>@Model.BirthDateFmt</span> <span>@Model.BirthPlace</span></p>
         }
         else
         {
             if (Model.BirthDataKnown)
             {
-                <p>✤ <span>@Model.BirthDateFmt</span> <span>@Model.BirthPlace</span></p>
+                <p><span class="symbol">✤</span> <span>@Model.BirthDateFmt</span> <span>@Model.BirthPlace</span></p>
             }
             if (Model.DeathDataKnown)
             {
-                <p>&dagger; <span>@Model.DeathDateFmt</span> <span>@Model.DeathPlace</span></p>
+                <p><span class="symbol">&dagger;</span> <span>@Model.DeathDateFmt</span> <span>@Model.DeathPlace</span></p>
             }
         }
     </div>

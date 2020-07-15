@@ -9,34 +9,84 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FamilyTreeNet.Pages.Reports
 {
+    /// <summary>
+    /// The Model class for the Person page, showing details about a person and his/her lineage.
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.RazorPages.PageModel" />
     [AllowAnonymous]
     public class PersonModel : PageModel
     {
         private readonly TreeService treeService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersonModel"/> class.
+        /// </summary>
+        /// <param name="treeService">The tree service.</param>
         public PersonModel(TreeService treeService)
         {
             this.treeService = treeService;
         }
 
-        public IndividualVm Primary { get; set; }
+        /// <summary>
+        /// Gets the primary person.
+        /// </summary>
+        /// <value>
+        /// The primary.
+        /// </value>
+        public IndividualVm Primary { get; private set; }
 
-        public FamilyVm ParentFamily { get; set; } = new FamilyVm();
+        /// <summary>
+        /// Gets the family of the parents of the primary.
+        /// </summary>
+        /// <value>
+        /// The parent family.
+        /// </value>
+        public FamilyVm ParentFamily { get; private set; } = new FamilyVm();
 
+        /// <summary>
+        /// Gets the siblings of the primary.
+        /// </summary>
+        /// <value>
+        /// The siblings.
+        /// </value>
         public List<IndividualVm> Siblings { get; } = new List<IndividualVm>();
 
+        /// <summary>
+        /// Gets or sets the family of the maternal grandparents.
+        /// </summary>
+        /// <value>
+        /// The maternal grandparents.
+        /// </value>
         public FamilyVm MaternalGrandparents { get; set; } = new FamilyVm();
 
+        /// <summary>
+        /// Gets or sets the family of the paternal grandparents.
+        /// </summary>
+        /// <value>
+        /// The paternal grandparents.
+        /// </value>
         public FamilyVm PaternalGrandparents { get; set; } = new FamilyVm();
 
+        /// <summary>
+        /// Gets any marriages of the primary.
+        /// </summary>
+        /// <value>
+        /// The marriages.
+        /// </value>
         public List<FamilyVm> Marriages { get; } = new List<FamilyVm>();
 
+        /// <summary>
+        /// Called when a GET request occurs.
+        /// </summary>
+        /// <param name="id">The identifier of the primary.</param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGet(long id)
         {
             var prim = await this.treeService.GetIndividualById(id).ConfigureAwait(false);
 
             if (prim == null)
             {
+                // couldn't find this person so back (?) to the FamilyNames page.
                 return RedirectToPage("FamilyNames");
             }
 

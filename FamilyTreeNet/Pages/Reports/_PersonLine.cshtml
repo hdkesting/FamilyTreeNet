@@ -9,25 +9,25 @@
         </a>
         @if (Model.IsMale)
         {
-            <strong>&male;👨</strong>
+            <span class="symbol">&male;</span>
         }
         else if (Model.IsFemale)
         {
-            <strong>&female;👩</strong>
+            <span class="symbol">&female;</span>
         }
         @if (Model.DiedAtBirth)
         {
-            <text>, ✤&dagger; </text>@($"{Model.BirthDateFmt} {Model.BirthPlace}")
+            <text>, </text><span class="symbol">✤&dagger;</span> @($"{Model.BirthDateFmt} {Model.BirthPlace}")
         }
         else
         {
             if (Model.BirthDataKnown)
             {
-                <text>, ✤ </text>@($"{Model.BirthDateFmt} {Model.BirthPlace}")
+                <text>, </text><span class="symbol">✤</span> @($"{Model.BirthDateFmt} {Model.BirthPlace}")
             }
             if (Model.DeathDataKnown)
             {
-                <text>, &dagger; </text>@($"{Model.DeathDateFmt} {Model.DeathPlace}")
+                <text>, </text><span class="symbol">&dagger;</span> @($"{Model.DeathDateFmt} {Model.DeathPlace}")
             }
         }
     </span>
