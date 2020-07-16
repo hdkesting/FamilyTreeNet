@@ -61,6 +61,8 @@ namespace FamilyTreeNet
                 options.Cookie.IsEssential = true;
             });
 
+            services.AddHttpContextAccessor();
+
             FamilyTree.Infra.MySql.StartupInfra.ConfigureServices(services, this.Configuration);
 
             services.AddTransient<TreeService>();

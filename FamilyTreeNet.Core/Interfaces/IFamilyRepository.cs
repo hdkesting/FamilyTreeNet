@@ -44,6 +44,13 @@ namespace FamilyTreeNet.Core.Interfaces
         Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted);
 
         /// <summary>
+        /// Gets the family by its identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task<FamilyDto> GetFamilyById(long id);
+
+        /// <summary>
         /// Gets the families (including spouses and children) where the individual (see id) is child.
         /// </summary>
         /// <param name="id">The child's identifier.</param>

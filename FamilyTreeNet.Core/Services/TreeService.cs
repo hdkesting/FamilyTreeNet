@@ -40,6 +40,9 @@ namespace FamilyTreeNet.Core.Services
         public Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted) 
             => this.familyRepository.GetSpouseFamiliesByIndividualId(id, includeDeleted);
 
+        public Task<FamilyDto> GetFamilyById(long id)
+            => this.familyRepository.GetFamilyById(id);
+
         public Task<List<FamilyDto>> GetChildFamiliesByIndividualId(long id, bool includeDeleted)
             => this.familyRepository.GetChildFamiliesByIndividualId(id, includeDeleted);
 

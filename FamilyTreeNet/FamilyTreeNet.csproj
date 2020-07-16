@@ -41,9 +41,4 @@
     <ProjectReference Include="..\FamilyTreeNet.Core\FamilyTreeNet.Core.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
 </Project>

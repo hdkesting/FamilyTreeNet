@@ -12,3 +12,6 @@
     <li><a href="/admin/person/restore">Restore soft-deleted people</a></li>
     <li><a asp-page="init/index">Initialize the database</a></li>
 </ul>
+
+<input type="checkbox" checked="@Model.IsAdmin" readonly="readonly" id="isadmin" /><label for="isadmin">Admin</label>
+<input type="checkbox" checked="@Model.IsEditor" readonly="readonly" id="iseditor" /><label for="iseditor">Editor</label>

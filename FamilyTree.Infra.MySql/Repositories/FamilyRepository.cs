@@ -178,6 +178,29 @@ WHERE s.individual_spouse_id = @Id";
             }
         }
 
+        public async Task<FamilyDto> GetFamilyById(long id)
+        {
+            var sql = @"SELECT id,
+marriage_date MarriageDateInt, marriage_place,
+divorce_date DivorceDateInt, divorce_place
+FROM family
+WHERE id = @Id";
+
+            using (var conn = new MySqlConnection(this.connStr))
+            {
+                var f1 = await conn.QueryFirstOrDefaultAsync<Family>(sql, new { id }).ConfigureAwait(false);
+                if (f1 is null)
+                {
+                    return null;
+                }
+
+                var f2 = await Map(f1, true);
+                await EnrichWithSpousesAndChildren(Enumerable.Repeat(f2,1), conn).ConfigureAwait(false);
+
+                return f2;
+            }
+        }
+
         /// <summary>
         /// Updates the relations between the family and spouses and children.
         /// </summary>

@@ -24,10 +24,12 @@
             <h1 style="font-size: 48pt;"><a href="/Admin">Family Tree - Admin</a></h1>
         </div>
         <div class="float-right">
-            <!-- TODO only show when logged in (TODO log in!) -->
+            @if (User.Identity.IsAuthenticated)
+            {
             <form action="/admin/logout" method="post">
                 <input type="submit" value="Sign Out" />
             </form>
+            }
         </div>
     </header>
     <div class="container">

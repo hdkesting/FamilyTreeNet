@@ -115,6 +115,23 @@ namespace FamilyTree.Infra.Repositories
             return res;
         }
 
+        public async Task<FamilyDto> GetFamilyById(long id)
+        {
+            var fam = await this.context.Families
+                .Include(f => f.Spouses)
+                .Include(f => f.Children)
+                .Where(f => f.Id == id)
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            if (fam is null)
+            {
+                return null;
+            }
+
+            return await Map(fam, true).ConfigureAwait(false);
+        }
+
         public async Task<List<FamilyDto>> GetSpouseFamiliesByIndividualId(long id, bool includeDeleted)
         {
             var list = await this.context.Families

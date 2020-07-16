@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FamilyTreeNet.Core.Services;
+using FamilyTreeNet.Support;
 using FamilyTreeNet.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FamilyTreeNet.Pages.Admin
 {
-    [Microsoft.AspNetCore.Authorization.Authorize(Roles ="editor")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = RoleNames.Editors)]
     public class SearchModel : PageModel
     {
         private readonly TreeService treeService;

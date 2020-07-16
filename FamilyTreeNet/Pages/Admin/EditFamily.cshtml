@@ -1,9 +1,77 @@
 ﻿@page
 @model FamilyTreeNet.Pages.Admin.EditFamilyModel
 @{
-    ViewData["Title"] = "EditFamily";
+    ViewData["Title"] = "Edit Family";
     Layout = "_AdminLayout";
+
+    var months = new List<(int index, string name)>();
+    months.Add((0, "unknown"));
+    months.AddRange(Enumerable.Range(1, 12).Select(i => (i, System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i))));
+
+    var days = new List<(int index, string value)>();
+    days.Add((0, "unknown"));
+    days.AddRange(Enumerable.Range(1, 31).Select(i => (i, i.ToString())));
 }
 
-<h1>EditFamily</h1>
+<h1>Edit page for family of <span class="name">@Model.FamilyName</span></h1>
+
+<form method="post" asp-page="EditFamily">
+    <input type="hidden" asp-for="@Model.Id" />
+
+    <div class="form-group">
+        <label for="marriageplace">Marriage place</label>
+        <input type="text" id="marriageplace" asp-for="@Model.MarriagePlace"
+               class="form-control" placeholder="Place of marriage" />
+    </div>
+
+    <div class="form-group">
+        <label for="marriageyear">Marriage date (yyyy mm dd)</label>
+        <div class="form-row">
+            <input type="number" id="marriageyear" asp-for="@Model.MarriageDate.Year"
+                   class="form-control  col-md-3" min="0" max="2100" />
+            <select id="marriagemonth" asp-for="@Model.MarriageDate.Month" class="form-control col-md-2">
+                @foreach (var m in months)
+                {
+                    <option value="@m.index">@m.name</option>
+                }
+            </select>
+            <select id="marriageday" asp-for="@Model.MarriageDate.Day" class="form-control col-md-2">
+                @foreach (var d in days)
+                {
+                    <option value="@d.index">@d.value</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="divorceplace">Divorce place (if any)</label>
+        <input type="text" id="divorceplace" asp-for="@Model.DivorcePlace"
+               class="form-control" placeholder="Place of divorce" />
+    </div>
+
+    <div class="form-group">
+        <label for="divorceyear">Divorce date (yyyy mm dd)</label>
+        <div class="form-row">
+            <input type="number" id="divorceyear" asp-for="@Model.DivorceDate.Year"
+                   class="form-control col-md-3" min="0" max="2100" />
+            <select id="divorcemonth" asp-for="@Model.DivorceDate.Month" class="form-control col-md-2">
+                @foreach (var m in months)
+                {
+                    <option value="@m.index">@m.name</option>
+                }
+            </select>
+            <select id="divorceday" asp-for="@Model.DivorceDate.Day" class="form-control col-md-2">
+                @foreach (var d in days)
+                {
+                    <option value="@d.index">@d.value</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-secondary" onclick="history.back(-1)">Cancel</button>
+
+</form>
 
