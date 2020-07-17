@@ -25,6 +25,10 @@ namespace FamilyTreeNet.Pages.Admin
         public IActionResult OnGet()
         {
             // now I do have an http context
+
+            // back at index page, so forget any previous path
+            PageStack.Clear(HttpContext.Session);
+
             var user = HttpContext.User;
             IsAdmin = user?.IsInRole(RoleNames.Administrators) ?? false;
             IsEditor = user?.IsInRole(RoleNames.Editors) ?? false;

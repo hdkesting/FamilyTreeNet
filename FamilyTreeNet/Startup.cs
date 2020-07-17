@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace FamilyTreeNet
 {
@@ -45,6 +46,23 @@ namespace FamilyTreeNet
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 
+            // https://stackoverflow.com/a/54813987/121309
+            services.Configure<CookieTempDataProviderOptions>(options => {
+                options.Cookie.IsEssential = true;
+            });
+
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-3.1#session-state
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddHttpContextAccessor();
+
             // require login everywhere, except where explicitly marked with [AllowAnonymous]
             // for access only to specific roles, add [Authorize(Roles = "...")]. Roles to add: admin, editor
             services.AddMvc(config =>
@@ -55,13 +73,6 @@ namespace FamilyTreeNet
                     config.Filters.Add(new AuthorizeFilter(policy));
                     config.EnableEndpointRouting = false;
                 });
-
-            // https://stackoverflow.com/a/54813987/121309
-            services.Configure<CookieTempDataProviderOptions>(options => {
-                options.Cookie.IsEssential = true;
-            });
-
-            services.AddHttpContextAccessor();
 
             FamilyTree.Infra.MySql.StartupInfra.ConfigureServices(services, this.Configuration);
 
@@ -96,7 +107,7 @@ namespace FamilyTreeNet
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-            //// app.UseSession();
+            app.UseSession();
 
             app.UseRouting();
             app.UseMvc();

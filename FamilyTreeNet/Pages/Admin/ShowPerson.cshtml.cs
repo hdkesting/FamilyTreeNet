@@ -28,13 +28,14 @@ namespace FamilyTreeNet.Pages.Admin
         public List<FamilyVm> Marriages { get; } = new List<FamilyVm>();
 
 
-        public async Task<IActionResult> OnGet(long id)
+        public async Task<IActionResult> OnGet(long id, int primary)
         {
+            PageStack.PushPage(HttpContext.Session, $"/Admin/ShowPerson/{id}", "");
             var prim = await this.treeService.GetIndividualById(id).ConfigureAwait(false);
 
             if (prim == null)
             {
-                return RedirectToPage("Search");
+                return RedirectToPage("Back");
             }
 
             Primary = new IndividualVm(prim);

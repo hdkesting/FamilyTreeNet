@@ -53,6 +53,7 @@ namespace FamilyTreeNet.Pages.Admin
         /// </summary>
         public async Task<IActionResult> OnGet()
         {
+            PageStack.PushPage(HttpContext.Session, "/Admin/EditFamily", $"id={Id}");
             if (this.Id <= 0)
             {
                 // create new family
@@ -94,8 +95,7 @@ namespace FamilyTreeNet.Pages.Admin
                 await this.treeService.Update(fam).ConfigureAwait(false);
             }
 
-            // TODO go back to the correct page
-            return RedirectToPage("Index"); // something better?
+            return RedirectToPage("Back"); 
         }
     }
 }

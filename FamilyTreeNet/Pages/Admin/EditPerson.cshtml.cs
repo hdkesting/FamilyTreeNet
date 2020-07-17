@@ -32,6 +32,7 @@ namespace FamilyTreeNet.Pages.Admin
 
         public async Task<IActionResult> OnGet(long primary, long cfam, long sfam)
         {
+            PageStack.PushPage(HttpContext.Session, "/Admin/EditPerson", $"primary={primary}&cfam={cfam}&sfam={sfam}");
             this.Primary = primary;
             this.ChildFam = cfam;
             this.SpouseFam = sfam;

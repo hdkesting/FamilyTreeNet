@@ -23,6 +23,7 @@ namespace FamilyTreeNet.Pages.Admin
         /// <param name="treeService">The tree service.</param>
         public DeletePersonModel(TreeService treeService)
         {
+            PageStack.PushPage(HttpContext.Session, "/Admin/DeletePerson", $"id={Id}");
             this.treeService = treeService;
         }
 
@@ -75,7 +76,7 @@ namespace FamilyTreeNet.Pages.Admin
                 await this.treeService.DeleteIndividualById(id).ConfigureAwait(false);
             }
 
-            return RedirectToPage("Search");
+            return RedirectToPage("Back");
         }
     }
 }

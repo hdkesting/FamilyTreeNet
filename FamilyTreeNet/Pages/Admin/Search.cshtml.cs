@@ -28,6 +28,7 @@ namespace FamilyTreeNet.Pages.Admin
 
         public async Task OnGet(string firstname, string lastname)
         {
+            PageStack.PushPage(HttpContext.Session, "/Admin/Search", $"firstname={Uri.EscapeDataString(firstname??"")}&lastname={Uri.EscapeDataString(lastname??"")}");
             this.Firstname = firstname;
             this.Lastname = lastname;
 

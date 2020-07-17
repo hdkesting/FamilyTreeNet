@@ -14,9 +14,12 @@ namespace FamilyTreeNet.Pages.Admin
     [Authorize(Roles = RoleNames.Editors)]
     public class AddFamilyModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            PageStack.PushPage(HttpContext.Session, "/Admin/AddFamily", "");
+
             // TODO
+            return RedirectToPage("Back");
         }
     }
 }

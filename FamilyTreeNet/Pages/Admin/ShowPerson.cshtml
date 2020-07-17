@@ -129,6 +129,11 @@
     <a asp-page="EditFamily" asp-route-id="0" asp-route-primary="@Model.Primary.Id" asp-route-famtype="S">add marriage</a>
 </div>
 
+<div>
+    <hr />
+    <a asp-page="Back" class="btn btn-secondary">Back</a>
+</div>
+
 @functions {
     IndividualVm WithCss(IndividualVm person, string css, long primary)
     {
